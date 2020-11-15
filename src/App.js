@@ -1,15 +1,15 @@
 /* 
   Provider:
-    Kapsayıcıdır. Provider yazılan sistemin en dış katmanı olmalı.
-    Provider katmanı, içerisinde bulunduğu sayfaların redux ile çalışmasını sağlar.
-    Ana katmandır.
+    It is the container we use to transfer data to all React app.
+    Provider layer is letting the pages work with redux if they are inside of the provider.
+    It is the main layer.
 */
 
 /*
  PersistGate:
-  Persistor değişkeni alır. Bu persistor reducer'ları barındırır.
-  Normal reducer'lardan farkı ise, bilgileri localStorage'da tutar.
-  Yani veriler sayfa yenilendiğinde kaybolmaz.
+  It takes persistor as vairable.It keeps inside the reducers.
+  There is a slight difference , it keeps localStorage.
+  When you refresh the page it doesnt go away.
 */
 
 import { Provider } from 'react-redux';
