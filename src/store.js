@@ -2,9 +2,10 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import thunk from 'redux-thunk';
+// Our own files. Structure is up to you.
 import rootReducer from './modules';
 
-// İlk alınan değerler değişken olarak yaratılır.
+// Variables for first configuration.
 const initialState = {};
 const enhancers = [];
 const middleware = [thunk];
