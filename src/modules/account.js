@@ -1,10 +1,12 @@
 import { createAction, handleActions } from 'redux-actions';
+import axios from 'axios';
 
 // ------------------------------------
 // Constants
 // ------------------------------------
 // Burası ActionTypes olarak kullanılır
 export const TEST_LOADING = "TEST_LOADING";
+export const SET_USER_DATAS ="SET_USER_DATAS";
 
 // ------------------------------------
 // Actions
@@ -15,6 +17,7 @@ export const TEST_LOADING = "TEST_LOADING";
         İçerisine aldığı değer actionType'tır.
 */
 const testLoading = createAction(TEST_LOADING);
+const setUserDatas = createAction(SET_USER_DATAS);
 
 
 /*
@@ -35,13 +38,26 @@ const loader = () => {
         console.log("LOADER WORKING");
         // true => payload
         dispatch(testLoading(true));
+        // dispatch({ type: TEST_LOADING });
+    }
+}
+
+const fetchTheData = () => {
+    return (dispatch) => {
+        axios.get("https://jsonplaceholder.typicode.com/users")
+            .then(res => {
+                dispatch(setUserDatas(res.data));
+            }).catch(err => {
+                console.log(err.response ? err.response : err);
+            });
     }
 }
 
 /* Actionlar disari aktarilir. Diger WEB sayfalarda kullanilabilmesi icin. */
 export const actions = {
     loader,
-    testLoading
+    testLoading,
+    fetchTheData
 };
 
 // ------------------------------------
@@ -50,7 +66,8 @@ export const actions = {
 // Konuyla ilgili (account), ilk degerler yaratilir.
 const initialState = {
     loading: false,
-    data: {}
+    data: {},
+    users: []
 }
 
 /*
@@ -69,6 +86,12 @@ export default handleActions({
         return {
             ...state,
             loading: true
+        }
+    },
+    SET_USER_DATAS: (state, { payload }) => {
+        return {
+            ...state,
+            users: payload
         }
     }
 }, initialState);
