@@ -1,24 +1,37 @@
-import logo from './logo.svg';
+/* 
+  Provider:
+    Kapsayıcıdır. Provider yazılan sistemin en dış katmanı olmalı.
+    Provider katmanı, içerisinde bulunduğu sayfaların redux ile çalışmasını sağlar.
+    Ana katmandır.
+*/
+
+/*
+ PersistGate:
+  Persistor değişkeni alır. Bu persistor reducer'ları barındırır.
+  Normal reducer'lardan farkı ise, bilgileri localStorage'da tutar.
+  Yani veriler sayfa yenilendiğinde kaybolmaz.
+*/
+
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+
+// CUSTOMS
+import store, { persistor } from './store';
+
+// CSS
 import './App.css';
+
+import TestPage from './TestPage';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <TestPage />
+        </PersistGate>
+      </Provider>
+    </>
   );
 }
 
