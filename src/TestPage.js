@@ -18,6 +18,7 @@ function TestPage() {
     return (
         <div>
             {/* <p>HELLO {`${account.loading}`}</p> */}
+            <p>HI</p>
         </div>
     )
 }
