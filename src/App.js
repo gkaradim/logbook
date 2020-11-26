@@ -26,6 +26,7 @@ import './App.css';
 import Home from './pages/Home';
 import Calculator from './pages/Calculator';
 import CalculatorSecond from './pages/CalculatorSecond';
+import TabPage from './pages/TabPage';
 
 function App() {
   return (
@@ -42,21 +43,25 @@ function App() {
                   <li>
                     <Link to="/calculator">Calculator</Link>
                   </li>
+                  <li>
+                    <Link to="/tabs">Tabs</Link>
+                  </li>
                 </ul>
               </nav>
             </div>
 
             <Switch>
-            <Route path="/calculator/second">
-                <CalculatorSecond />
+              <Route exact path="/">
+                <Home />
               </Route>
-              
-              <Route path="/calculator">
+              <Route exact path="/calculator">
                 <Calculator />
               </Route>
-
-              <Route path="/">
-                <Home />
+              <Route path="/calculator/second">
+                <CalculatorSecond />
+              </Route>
+              <Route path="/tabs">
+                <TabPage />
               </Route>
             </Switch>
           </BrowserRouter>
