@@ -1,18 +1,18 @@
 import React, { useEffect } from 'react';
 
-import { useSelector, useDispatch } from 'react-redux';
+// import { useSelector, useDispatch } from 'react-redux';
 
-import { actions } from './modules/account';
+// import { actions } from './modules/account';
 
 function TestPage() {
     // const account = useSelector(state => state.account);
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
 
     useEffect(() => {
         // console.log(account)
         // dispatch({ type: "TEST_LOADING", payload: "ASD" });
         // dispatch(actions.loader())
-        dispatch(actions.fetchTheData());
+        // dispatch(actions.fetchTheData());
     }, []);
 
     return (
