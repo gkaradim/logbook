@@ -12,21 +12,21 @@
   When you refresh the page it doesnt go away.
 */
 
-import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 
 import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
 
 // CUSTOMS
-import store, { persistor } from './store';
+import store, { persistor } from "./store";
 
 // CSS
-import './App.css';
+import "./App.css";
 
-import Home from './pages/Home';
-import Calculator from './pages/Calculator';
-import CalculatorSecond from './pages/CalculatorSecond';
-import TabPage from './pages/TabPage';
+import Home from "./pages/Home";
+import Calculator from "./pages/Calculator";
+import CalculatorSecond from "./pages/CalculatorSecond";
+import TabPage from "./pages/TabPage";
 
 function App() {
   return (
@@ -44,7 +44,7 @@ function App() {
                     <Link to="/calculator">Calculator</Link>
                   </li>
                   <li>
-                    <Link to="/tabs">Tabs</Link>
+                    <Link to="/tabs">Influent</Link>
                   </li>
                 </ul>
               </nav>
