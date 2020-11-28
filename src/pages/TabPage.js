@@ -12,7 +12,7 @@ import CalculatorTwo from "../components/CalculatorTwo";
 
 function TabPage() {
   const [data, setData] = useState(null);
-  const [fromDate, setFromDate] = useState(new Date());
+  const [date, setDate] = useState(new Date());
   const [wwadf, setWwadf] = useState("");
   const [tss, setTss] = useState("");
   const [thirdNumber, setThirdNumber] = useState("");
@@ -42,7 +42,7 @@ function TabPage() {
 
   const changeDate = async (newDate) => {
     try {
-      setFromDate(newDate);
+      setDate(newDate);
       const date = moment(newDate).format("YYYY-MM-DD");
 
       const response = await axios.get(
@@ -70,13 +70,13 @@ function TabPage() {
   const submitForm = async () => {
     try {
       if (!data) {
-        const date = moment(fromDate).format("YYYY-MM-DD");
+        const dateNew = moment(date).format("YYYY-MM-DD");
         const response = await axios.post(
           "https://easy-log-book-api.herokuapp.com/api/v1/influent",
           {
             wwadf,
             tss,
-            fromDate: date,
+            date: dateNew,
           }
         );
 
@@ -94,7 +94,7 @@ function TabPage() {
   const submitFormTwo = async () => {
     try {
       if (!data) {
-        alert("First set first number and second number");
+        alert("First set Wwadf and Tss");
       } else {
         const response = await axios.put(`/calculate/${data._id}`, {
           thirdNumber,
@@ -118,7 +118,7 @@ function TabPage() {
 
       <DatePicker
         className="mb-4"
-        selected={fromDate}
+        selected={date}
         onChange={(date) => changeDate(date)}
       />
 
