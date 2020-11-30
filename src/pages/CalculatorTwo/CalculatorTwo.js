@@ -4,7 +4,7 @@ const CalculatorTwo = ({ thirdNumber, totalTwo, setThirdNumber, submitFormTwo })
     return (
         <div>
             <label>Third Number:</label><br />
-            <input value={thirdNumber} onChange={e => setThirdNumber(e.target.value)} />
+            <input type="number" value={thirdNumber} onChange={e => setThirdNumber(e.target.value)} />
             <br /><br />
 
             <label>Total: {totalTwo}</label>

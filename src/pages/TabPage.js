@@ -17,12 +17,14 @@ function TabPage() {
     return current.isBefore(today);
   };
 
+  const [isSeeOutputData, setIsSeeOutputData] = useState(false);
+
   const [wwadf, setWwadf] = useState("");
   const [tss, setTss] = useState("");
   const [thirdNumber, setThirdNumber] = useState("");
 
   useEffect(() => {
-    getTodayValues();
+    //getTodayValues();
   }, []);
 
   const getTodayValues = async () => {
@@ -45,7 +47,7 @@ function TabPage() {
   };
 
   const changeDate = async (newDate) => {
-    try {
+   /*  try {
       setDate(newDate);
       const date = moment(newDate).format("YYYY-MM-DD");
 
@@ -68,26 +70,28 @@ function TabPage() {
       }
     } catch (error) {
       console.log(error);
-    }
+    } */
   };
 
   const submitForm = async () => {
     try {
       if (!data) {
-        const dateNew = moment(date).format("YYYY-MM-DD");
+
+        const dateNew = moment(date).toISOString();
         const response = await axios.post(
-          "https://easy-log-book-api.herokuapp.com/api/v1/influent",
+          "/api/v1/influent",
           {
-            wwadf,
-            tss,
             date: dateNew,
+            wwadf: Number(wwadf),
+            tss: Number(tss)
           }
         );
 
         const data = response.data;
 
-        if (data.status) {
+        if (response.status === 201) {
           setData(data);
+          setIsSeeOutputData(true);
         }
       }
     } catch (error) {
@@ -136,6 +140,8 @@ function TabPage() {
             submitForm={submitForm}
             setWwadf={setWwadf}
             setTss={setTss}
+            isSeeOutputData={isSeeOutputData}
+            dataID={data ? data.id : ""}
           />
         </Tab>
 

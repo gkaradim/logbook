@@ -1,36 +1,33 @@
 import React from "react";
 import "./OutPutTableData.scss";
 
-const OutPutTableData = () => {
+import axios from 'axios'
+
+const OutPutTableData = ({ dataID }) => {
+  const [output, setOutput] = React.useState({});
   React.useEffect(() => {
-    //Explain the diferrence
-    // getLogs(id)
-    //   .then((res) => {
-    //     setData(res.data);
-    //   })
-    //   .catch((err) => {
-    //     toast.error(getErrorMessage(err));
-    //   })
-    //   .finally(() => {
-    //     setLoading(false);
-    //   });
-    // try {
-    //   const response = await axios.get(
-    //   );
-    //   const resData = response.data;
-    //   if (resData.status) {
-    //     setData(resData.data);
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    // }
-    //eslint-disable-next-line
+    getOutput();
   }, []);
+
+  const getOutput = async () => {
+    try {
+      const response = await axios.get(`/api/v1/influent/${dataID}`);
+      
+      if (response.status === 200) {
+        setOutput(response.data);
+      }
+
+    } catch(err) {
+      console.log(err);
+    }
+  }
 
   return (
     <div className={"outPutTable"}>
       <label>OUTPUT DATA</label>
       <br />
+      <p>tss: {output.tss}</p>
+      <p>wwadf: {output.wwadf}</p>
     </div>
   );
 };

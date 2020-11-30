@@ -8,18 +8,20 @@ const InfluentCalculator = ({
   submitForm,
   setWwadf,
   setTss,
+  isSeeOutputData,
+  dataID
 }) => {
   return (
     <div>
       <label>WWADF:</label>
       <br />
-      <input value={wwadf} onChange={(e) => setWwadf(e.target.value)} />
+      <input type="number" value={wwadf} onChange={(e) => setWwadf(e.target.value)} />
       <br />
       <br />
 
       <label>TSS:</label>
       <br />
-      <input value={tss} onChange={(e) => setTss(e.target.value)} />
+      <input type="number" value={tss} onChange={(e) => setTss(e.target.value)} />
       <br />
       <br />
 
@@ -28,7 +30,7 @@ const InfluentCalculator = ({
       <br />
 
       <button onClick={submitForm}>Submit</button>
-      <OutPutTableData />
+      {isSeeOutputData && <OutPutTableData dataID={dataID} />}
     </div>
   );
 };
