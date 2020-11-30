@@ -6,13 +6,17 @@ import DatePicker from "react-datepicker";
 import axios from "axios";
 import moment from "moment";
 
-// Component Page
-import CalculatorOne from "../components/CalculatorOne";
-import CalculatorTwo from "../components/CalculatorTwo";
+import CalculatorTwo from "./CalculatorTwo/CalculatorTwo";
+import InfluentCalculator from "./Influent/index";
 
 function TabPage() {
   const [data, setData] = useState(null);
   const [date, setDate] = useState(new Date());
+  const today = moment();
+  const disableFutureDt = (current) => {
+    return current.isBefore(today);
+  };
+
   const [wwadf, setWwadf] = useState("");
   const [tss, setTss] = useState("");
   const [thirdNumber, setThirdNumber] = useState("");
@@ -120,11 +124,12 @@ function TabPage() {
         className="mb-4"
         selected={date}
         onChange={(date) => changeDate(date)}
+        isValidDate={disableFutureDt}
       />
 
       <Tabs defaultActiveKey="home" id="uncontrolled-tab-example">
         <Tab className="py-5" eventKey="home" title="Calculator 1">
-          <CalculatorOne
+          <InfluentCalculator
             wwadf={wwadf}
             tss={tss}
             total={data ? data.total : ""}

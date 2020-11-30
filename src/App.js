@@ -41,9 +41,6 @@ function App() {
                     <Link to="/">Home</Link>
                   </li>
                   <li>
-                    <Link to="/calculator">Calculator</Link>
-                  </li>
-                  <li>
                     <Link to="/tabs">Influent</Link>
                   </li>
                 </ul>
@@ -53,12 +50,6 @@ function App() {
             <Switch>
               <Route exact path="/">
                 <Home />
-              </Route>
-              <Route exact path="/calculator">
-                <Calculator />
-              </Route>
-              <Route path="/calculator/second">
-                <CalculatorSecond />
               </Route>
               <Route path="/tabs">
                 <TabPage />
