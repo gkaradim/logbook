@@ -46,14 +46,12 @@ function TabPage() {
     }
   };
 
-  const changeDate = async (newDate) => {
-   /*  try {
-      setDate(newDate);
-      const date = moment(newDate).format("YYYY-MM-DD");
+  const changeDate = async (date) => {
+    try {
+      setDate(date);
+      // const dateNew = moment(date).format("YYYY-MM-DD");
 
-      const response = await axios.get(
-        `https://easy-log-book-api.herokuapp.com/api/v1/influent/${date}`
-      );
+      const response = await axios.get(`/api/v1/influent`);
 
       const resData = response.data;
 
@@ -61,31 +59,25 @@ function TabPage() {
         setData(resData.data);
         setWwadf(resData.data.wwadf);
         setTss(resData.data.tss);
-        setThirdNumber(resData.data.thirdNumber);
       } else {
         setData(null);
         setWwadf("");
         setTss("");
-        setThirdNumber("");
       }
     } catch (error) {
       console.log(error);
-    } */
+    }
   };
 
   const submitForm = async () => {
     try {
       if (!data) {
-
         const dateNew = moment(date).toISOString();
-        const response = await axios.post(
-          "/api/v1/influent",
-          {
-            date: dateNew,
-            wwadf: Number(wwadf),
-            tss: Number(tss)
-          }
-        );
+        const response = await axios.post("/api/v1/influent", {
+          date: dateNew,
+          wwadf: Number(wwadf),
+          tss: Number(tss),
+        });
 
         const data = response.data;
 
@@ -99,26 +91,26 @@ function TabPage() {
     }
   };
 
-  const submitFormTwo = async () => {
-    try {
-      if (!data) {
-        alert("First set Wwadf and Tss");
-      } else {
-        const response = await axios.put(`/calculate/${data._id}`, {
-          thirdNumber,
-          wwadf,
-        });
+  // const submitFormTwo = async () => {
+  //   try {
+  //     if (!data) {
+  //       alert("First set Wwadf and Tss");
+  //     } else {
+  //       const response = await axios.put(`/calculate/${data._id}`, {
+  //         thirdNumber,
+  //         wwadf,
+  //       });
 
-        const resData = response.data;
+  //       const resData = response.data;
 
-        if (resData.status) {
-          setData(resData.data);
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //       if (resData.status) {
+  //         setData(resData.data);
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <div className="px-5">
@@ -150,7 +142,7 @@ function TabPage() {
             thirdNumber={thirdNumber}
             totalTwo={data ? data.totalTwo : ""}
             setThirdNumber={setThirdNumber}
-            submitFormTwo={submitFormTwo}
+            // submitFormTwo={submitFormTwo}
           />
         </Tab>
       </Tabs>
