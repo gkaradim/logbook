@@ -1,5 +1,9 @@
 import React from "react";
 import OutPutTableData from "../../components/OutPutTableData";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+
+import "./Influent.scss";
 
 const InfluentCalculator = ({
   wwadf,
@@ -9,27 +13,47 @@ const InfluentCalculator = ({
   setWwadf,
   setTss,
   isSeeOutputData,
-  dataID
+  dataID,
 }) => {
   return (
     <div>
-      <label>WWADF:</label>
       <br />
-      <input type="number" value={wwadf} onChange={(e) => setWwadf(e.target.value)} />
+      <TextField
+        id="filled-number"
+        label="WWADF"
+        type="number"
+        variant="filled"
+        value={wwadf}
+        onChange={(e) => setWwadf(e.target.value)}
+      />
+
       <br />
       <br />
 
-      <label>TSS:</label>
       <br />
-      <input type="number" value={tss} onChange={(e) => setTss(e.target.value)} />
+      <TextField
+        id="filled-number"
+        label="TSS"
+        type="number"
+        variant="filled"
+        value={tss}
+        onChange={(e) => setTss(e.target.value)}
+      />
+
       <br />
       <br />
 
       {/* <label>Total: {total}</label> */}
       <br />
       <br />
-
-      <button onClick={submitForm}>Submit</button>
+      <Button
+        variant="outlined"
+        size="medium"
+        color="primary"
+        onClick={submitForm}
+      >
+        Submit
+      </Button>
       {isSeeOutputData && <OutPutTableData dataID={dataID} />}
     </div>
   );

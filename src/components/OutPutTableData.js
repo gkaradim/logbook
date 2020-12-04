@@ -1,7 +1,7 @@
 import React from "react";
 import "./OutPutTableData.scss";
 
-import axios from 'axios'
+import axios from "axios";
 
 const OutPutTableData = ({ dataID }) => {
   const [output, setOutput] = React.useState({});
@@ -12,22 +12,21 @@ const OutPutTableData = ({ dataID }) => {
   const getOutput = async () => {
     try {
       const response = await axios.get(`/api/v1/influent/${dataID}`);
-      
+
       if (response.status === 200) {
         setOutput(response.data);
       }
-
-    } catch(err) {
+    } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   return (
     <div className={"outPutTable"}>
       <label>OUTPUT DATA</label>
       <br />
-      <p>tss: {output.tss}</p>
       <p>wwadf: {output.wwadf}</p>
+      <p>tss: {output.tss}</p>
     </div>
   );
 };

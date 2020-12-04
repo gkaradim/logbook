@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 
-import { Tabs, Tab } from "react-bootstrap";
+// import { Tabs, Tab } from "react-bootstrap";
+
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
+
 import DatePicker from "react-datepicker";
 
 import axios from "axios";
@@ -9,12 +15,48 @@ import moment from "moment";
 import CalculatorTwo from "./CalculatorTwo/CalculatorTwo";
 import InfluentCalculator from "./Influent/index";
 
+import "./TabPage.scss";
+
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      className="tabs"
+      hidden={value !== index}
+      id={`scrollable-auto-tabpanel-${index}`}
+      aria-labelledby={`scrollable-auto-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box p={3}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+function a11yProps(index) {
+  return {
+    id: `scrollable-auto-tab-${index}`,
+    "aria-controls": `scrollable-auto-tabpanel-${index}`,
+  };
+}
+
 function TabPage() {
   const [data, setData] = useState(null);
   const [date, setDate] = useState(new Date());
   const today = moment();
   const disableFutureDt = (current) => {
     return current.isBefore(today);
+  };
+
+  const [value, setValue] = React.useState(0);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
   };
 
   const [isSeeOutputData, setIsSeeOutputData] = useState(false);
@@ -113,39 +155,50 @@ function TabPage() {
   // };
 
   return (
-    <div className="px-5">
-      <h2 className="mb-3">GREEK LOG BOOK</h2>
+    <div className="container flowRate">
+      <div className={"flowRate__inner"}>
+        <h2>Greek Log Book</h2>
 
-      <DatePicker
-        className="mb-4"
-        selected={date}
-        onChange={(date) => changeDate(date)}
-        isValidDate={disableFutureDt}
-      />
+        <DatePicker
+          selected={date}
+          onChange={(date) => changeDate(date)}
+          isValidDate={disableFutureDt}
+        />
+      </div>
 
-      <Tabs defaultActiveKey="home" id="uncontrolled-tab-example">
-        <Tab className="py-5" eventKey="home" title="Calculator 1">
-          <InfluentCalculator
-            wwadf={wwadf}
-            tss={tss}
-            total={data ? data.total : ""}
-            submitForm={submitForm}
-            setWwadf={setWwadf}
-            setTss={setTss}
-            isSeeOutputData={isSeeOutputData}
-            dataID={data ? data.id : ""}
-          />
-        </Tab>
-
-        <Tab className="py-5" eventKey="profile" title="Calculator 2">
-          <CalculatorTwo
-            thirdNumber={thirdNumber}
-            totalTwo={data ? data.totalTwo : ""}
-            setThirdNumber={setThirdNumber}
-            // submitFormTwo={submitFormTwo}
-          />
-        </Tab>
+      <Tabs
+        value={value}
+        onChange={handleChange}
+        indicatorColor="primary"
+        textColor="primary"
+        variant="scrollable"
+        scrollButtons="auto"
+        aria-label="scrollable auto tabs example"
+      >
+        <Tab label="Influent" {...a11yProps(0)} />
+        <Tab label="Tab 2" {...a11yProps(1)} />
+        {/* <Tab label="Item Three" {...a11yProps(2)} />
+        <Tab label="Item Four" {...a11yProps(3)} />
+        <Tab label="Item Five" {...a11yProps(4)} />
+        <Tab label="Item Six" {...a11yProps(5)} />
+        <Tab label="Item Seven" {...a11yProps(6)} /> */}
       </Tabs>
+
+      <TabPanel value={value} index={0}>
+        <InfluentCalculator
+          wwadf={wwadf}
+          tss={tss}
+          total={data ? data.total : ""}
+          submitForm={submitForm}
+          setWwadf={setWwadf}
+          setTss={setTss}
+          isSeeOutputData={isSeeOutputData}
+          dataID={data ? data.id : ""}
+        />
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+        tab2
+      </TabPanel>
     </div>
   );
 }

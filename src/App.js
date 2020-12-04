@@ -15,7 +15,8 @@
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 
-import { BrowserRouter, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
+import Sidebar from "./components/Sidebar";
 
 // CUSTOMS
 import store, { persistor } from "./store";
@@ -23,38 +24,13 @@ import store, { persistor } from "./store";
 // CSS
 import "./App.css";
 
-import Home from "./pages/Home";
-import Calculator from "./pages/Calculator";
-import CalculatorSecond from "./pages/CalculatorSecond";
-import TabPage from "./pages/TabPage";
-
 function App() {
   return (
     <>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <BrowserRouter>
-            <div>
-              <nav>
-                <ul>
-                  <li>
-                    <Link to="/">Home</Link>
-                  </li>
-                  <li>
-                    <Link to="/tabs">Influent</Link>
-                  </li>
-                </ul>
-              </nav>
-            </div>
-
-            <Switch>
-              <Route exact path="/">
-                <Home />
-              </Route>
-              <Route path="/tabs">
-                <TabPage />
-              </Route>
-            </Switch>
+            <Sidebar />
           </BrowserRouter>
         </PersistGate>
       </Provider>

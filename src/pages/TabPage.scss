@@ -1,0 +1,49 @@
+.container {
+  margin-top: 50px;
+}
+
+.flowRate {
+  width: 100%;
+
+  h2 {
+    margin-bottom: 0 !important;
+    color: #57718c !important;
+  }
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #2f405121;
+    padding-bottom: 25px;
+  }
+  .react-datepicker-wrapper {
+    margin-left: 100px;
+  }
+}
+.MuiTabs-root {
+  background-color: #f5f5f5;
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+    0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+}
+
+.tabs {
+  .MuiBox-root {
+    padding: 0;
+    margin-top: 20px;
+  }
+}
+.MuiTab-root {
+  outline: none !important;
+}
+
+.PrivateTabIndicator-colorPrimary-2 {
+  background-color: #2f4051 !important;
+}
+
+.MuiTab-textColorPrimary.Mui-selected {
+  color: #2f4051 !important;
+}
+.react-datepicker-popper {
+  z-index: 2 !important;
+}
