@@ -11,6 +11,7 @@ import DatePicker from "react-datepicker";
 
 import axios from "axios";
 import moment from "moment";
+import { Line } from 'react-chartjs-2'
 
 import CalculatorTwo from "./CalculatorTwo/CalculatorTwo";
 import InfluentCalculator from "./Influent/index";
@@ -45,6 +46,30 @@ function a11yProps(index) {
   };
 }
 
+const lineChartData = {
+  labels: ['January', 'February', 'March','April', 'May','January', 'February', 'March','April', 'May'],
+  datasets: [
+    {
+      label: 'Rainfall',
+      fill: false,
+      lineTension: 0.5,
+      backgroundColor: 'rgba(75,192,192,1)',
+      borderColor: 'rgba(0,0,0,1)',
+      borderWidth: 2,
+      data: [65, 59, 80, 81, 56]
+    },
+    {
+      label: 'Rainfall2',
+      fill: false,
+      lineTension: 0.5,
+      backgroundColor: 'red',
+      borderColor: '#ccc',
+      borderWidth: 2,
+      data: [1, 3, 5, 100, 30]
+    }
+  ]
+}
+
 function TabPage() {
   const [data, setData] = useState(null);
   const [date, setDate] = useState(new Date());
@@ -66,22 +91,22 @@ function TabPage() {
   const [thirdNumber, setThirdNumber] = useState("");
 
   useEffect(() => {
-    //getTodayValues();
+    getTodayValues();
   }, []);
 
   const getTodayValues = async () => {
     try {
-      const date = moment(new Date()).format("YYYY-MM-DD");
+      const dateNew = moment(new Date()).format("YYYY-MM-DD");
 
-      const response = await axios.get(`/calculate/${date}`);
+      const response = await axios.get(`/api/v1/influent`, { params: { date: dateNew } });
 
-      const resData = response.data;
+      const data = response.data;
 
-      if (resData.status) {
-        setData(resData.data);
-        setWwadf(resData.data.wwadf);
-        setTss(resData.data.tss);
-        setThirdNumber(resData.data.thirdNumber);
+      if (response.status === 200) {
+        setData(data);
+        setWwadf(data.wwadf);
+        setTss(data.tss);
+        setIsSeeOutputData(true);
       }
     } catch (error) {
       console.log(error);
@@ -91,23 +116,28 @@ function TabPage() {
   const changeDate = async (date) => {
     try {
       setDate(date);
-      // const dateNew = moment(date).format("YYYY-MM-DD");
+      const dateNew = moment(date).format("YYYY-MM-DD");
 
-      const response = await axios.get(`/api/v1/influent`);
+      const response = await axios.get(`/api/v1/influent`, { params: { date: dateNew } });
 
-      const resData = response.data;
+      const data = response.data;
 
-      if (resData.status) {
-        setData(resData.data);
-        setWwadf(resData.data.wwadf);
-        setTss(resData.data.tss);
-      } else {
-        setData(null);
-        setWwadf("");
-        setTss("");
+      if (response.status == 200) {
+        setData(data);
+        setWwadf(data.wwadf);
+        setTss(data.tss);
+        setIsSeeOutputData(true);
       }
     } catch (error) {
-      console.log(error);
+      if (error.response) {
+        if (error.response.status == 404) {
+          setData(null);
+          setWwadf("");
+          setTss("");
+          setIsSeeOutputData(false);
+        }
+      }
+      console.log(error.response ? error.response : error);
     }
   };
 
@@ -155,14 +185,14 @@ function TabPage() {
   // };
 
   return (
-    <div className="container flowRate">
+    <div className="container flowRate" style={{ paddingLeft: 240 }}>
       <div className={"flowRate__inner"}>
         <h2>Greek Log Book</h2>
 
         <DatePicker
           selected={date}
           onChange={(date) => changeDate(date)}
-          isValidDate={disableFutureDt}
+          maxDate={new Date()}
         />
       </div>
 
@@ -185,6 +215,20 @@ function TabPage() {
       </Tabs>
 
       <TabPanel value={value} index={0}>
+        <Line
+          data={lineChartData}
+          options={{
+            title: {
+              display: true,
+              text: 'Average Rainfall per month',
+              fontSize: 20
+            },
+            legend: {
+              display: true,
+              position: 'right'
+            }
+          }}/>
+
         <InfluentCalculator
           wwadf={wwadf}
           tss={tss}
