@@ -194,6 +194,7 @@ function TabPage() {
           setTss={setTss}
           isSeeOutputData={isSeeOutputData}
           dataID={data ? data.id : ""}
+          data={data}
         />
       </TabPanel>
       <TabPanel value={value} index={1}>

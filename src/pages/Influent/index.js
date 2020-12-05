@@ -8,7 +8,7 @@ import "./Influent.scss";
 const InfluentCalculator = ({
   wwadf,
   tss,
-  total,
+  data,
   submitForm,
   setWwadf,
   setTss,
@@ -25,6 +25,7 @@ const InfluentCalculator = ({
         variant="filled"
         value={wwadf}
         onChange={(e) => setWwadf(e.target.value)}
+        disabled={data}
       />
 
       <br />
@@ -38,6 +39,7 @@ const InfluentCalculator = ({
         variant="filled"
         value={tss}
         onChange={(e) => setTss(e.target.value)}
+        disabled={data}
       />
 
       <br />
