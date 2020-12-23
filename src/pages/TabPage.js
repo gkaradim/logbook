@@ -46,7 +46,7 @@ function a11yProps(index) {
   };
 }
 
-const lineChartData = {
+/* const lineChartData = {
   labels: ['January', 'February', 'March','April', 'May','January', 'February', 'March','April', 'May'],
   datasets: [
     {
@@ -68,7 +68,7 @@ const lineChartData = {
       data: [1, 3, 5, 100, 30]
     }
   ]
-}
+} */
 
 function TabPage() {
   const [data, setData] = useState(null);
@@ -121,6 +121,8 @@ function TabPage() {
       const response = await axios.get(`/api/v1/influent`, { params: { date: dateNew } });
 
       const data = response.data;
+
+      console.log(response);
 
       if (response.status == 200) {
         setData(data);
@@ -215,7 +217,7 @@ function TabPage() {
       </Tabs>
 
       <TabPanel value={value} index={0}>
-        <Line
+        {/* <Line
           data={lineChartData}
           options={{
             title: {
@@ -227,7 +229,7 @@ function TabPage() {
               display: true,
               position: 'right'
             }
-          }}/>
+          }}/> */}
 
         <InfluentCalculator
           wwadf={wwadf}
