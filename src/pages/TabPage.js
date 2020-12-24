@@ -46,19 +46,8 @@ function a11yProps(index) {
   };
 }
 
-const lineChartData = {
-  labels: [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-  ],
+/* const lineChartData = {
+  labels: ['January', 'February', 'March','April', 'May','January', 'February', 'March','April', 'May'],
   datasets: [
     {
       label: "Flow Rate",
@@ -76,10 +65,10 @@ const lineChartData = {
       backgroundColor: "red",
       borderColor: "#ccc",
       borderWidth: 2,
-      data: [300, 359, 680, 781, 256],
-    },
-  ],
-};
+      data: [1, 3, 5, 100, 30]
+    }
+  ]
+} */
 
 function TabPage() {
   const [data, setData] = useState(null);
@@ -132,7 +121,9 @@ function TabPage() {
 
       const data = response.data;
 
-      if (response.status === 200) {
+      console.log(response);
+
+      if (response.status == 200) {
         setData(data);
         setWwadf(data.wwadf);
         setTss(data.tss);
@@ -207,6 +198,20 @@ function TabPage() {
       </Tabs>
 
       <TabPanel value={value} index={0}>
+        {/* <Line
+          data={lineChartData}
+          options={{
+            title: {
+              display: true,
+              text: 'Average Rainfall per month',
+              fontSize: 20
+            },
+            legend: {
+              display: true,
+              position: 'right'
+            }
+          }}/> */}
+
         <InfluentCalculator
           wwadf={wwadf}
           tss={tss}
