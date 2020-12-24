@@ -6,7 +6,7 @@ import InfoIcon from "@material-ui/icons/Info";
 
 export const SidebarData = [
   {
-    title: "home",
+    title: "Home",
     icon: <HomeIcon />,
     link: "/",
   },

@@ -11,7 +11,7 @@ import DatePicker from "react-datepicker";
 
 import axios from "axios";
 import moment from "moment";
-import { Line } from 'react-chartjs-2'
+import { Line } from "react-chartjs-2";
 
 import CalculatorTwo from "./CalculatorTwo/CalculatorTwo";
 import InfluentCalculator from "./Influent/index";
@@ -47,36 +47,43 @@ function a11yProps(index) {
 }
 
 const lineChartData = {
-  labels: ['January', 'February', 'March','April', 'May','January', 'February', 'March','April', 'May'],
+  labels: [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+  ],
   datasets: [
     {
-      label: 'Rainfall',
+      label: "Flow Rate",
       fill: false,
       lineTension: 0.5,
-      backgroundColor: 'rgba(75,192,192,1)',
-      borderColor: 'rgba(0,0,0,1)',
+      backgroundColor: "rgba(75,192,192,1)",
+      borderColor: "rgba(0,0,0,1)",
       borderWidth: 2,
-      data: [65, 59, 80, 81, 56]
+      data: [200, 559, 680, 781, 256],
     },
     {
-      label: 'Rainfall2',
+      label: "TSS",
       fill: false,
       lineTension: 0.5,
-      backgroundColor: 'red',
-      borderColor: '#ccc',
+      backgroundColor: "red",
+      borderColor: "#ccc",
       borderWidth: 2,
-      data: [1, 3, 5, 100, 30]
-    }
-  ]
-}
+      data: [300, 359, 680, 781, 256],
+    },
+  ],
+};
 
 function TabPage() {
   const [data, setData] = useState(null);
   const [date, setDate] = useState(new Date());
-  const today = moment();
-  const disableFutureDt = (current) => {
-    return current.isBefore(today);
-  };
 
   const [value, setValue] = React.useState(0);
 
@@ -88,7 +95,6 @@ function TabPage() {
 
   const [wwadf, setWwadf] = useState("");
   const [tss, setTss] = useState("");
-  const [thirdNumber, setThirdNumber] = useState("");
 
   useEffect(() => {
     getTodayValues();
@@ -98,7 +104,9 @@ function TabPage() {
     try {
       const dateNew = moment(new Date()).format("YYYY-MM-DD");
 
-      const response = await axios.get(`/api/v1/influent`, { params: { date: dateNew } });
+      const response = await axios.get(`/api/v1/influent`, {
+        params: { date: dateNew },
+      });
 
       const data = response.data;
 
@@ -118,11 +126,13 @@ function TabPage() {
       setDate(date);
       const dateNew = moment(date).format("YYYY-MM-DD");
 
-      const response = await axios.get(`/api/v1/influent`, { params: { date: dateNew } });
+      const response = await axios.get(`/api/v1/influent`, {
+        params: { date: dateNew },
+      });
 
       const data = response.data;
 
-      if (response.status == 200) {
+      if (response.status === 200) {
         setData(data);
         setWwadf(data.wwadf);
         setTss(data.tss);
@@ -130,7 +140,7 @@ function TabPage() {
       }
     } catch (error) {
       if (error.response) {
-        if (error.response.status == 404) {
+        if (error.response.status === 404) {
           setData(null);
           setWwadf("");
           setTss("");
@@ -163,29 +173,8 @@ function TabPage() {
     }
   };
 
-  // const submitFormTwo = async () => {
-  //   try {
-  //     if (!data) {
-  //       alert("First set Wwadf and Tss");
-  //     } else {
-  //       const response = await axios.put(`/calculate/${data._id}`, {
-  //         thirdNumber,
-  //         wwadf,
-  //       });
-
-  //       const resData = response.data;
-
-  //       if (resData.status) {
-  //         setData(resData.data);
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
   return (
-    <div className="container flowRate" style={{ paddingLeft: 240 }}>
+    <div className="flowRate" style={{ paddingLeft: 260 }}>
       <div className={"flowRate__inner"}>
         <h2>Greek Log Book</h2>
 
@@ -205,30 +194,19 @@ function TabPage() {
         scrollButtons="auto"
         aria-label="scrollable auto tabs example"
       >
-        <Tab label="Influent" {...a11yProps(0)} />
-        <Tab label="Tab 2" {...a11yProps(1)} />
-        {/* <Tab label="Item Three" {...a11yProps(2)} />
-        <Tab label="Item Four" {...a11yProps(3)} />
-        <Tab label="Item Five" {...a11yProps(4)} />
-        <Tab label="Item Six" {...a11yProps(5)} />
-        <Tab label="Item Seven" {...a11yProps(6)} /> */}
+        <Tab label="Raw Influent" {...a11yProps(0)} />
+        <Tab label="Primary Clarifier Effluent" {...a11yProps(1)} />
+        <Tab label="RBC Unit A" {...a11yProps(2)} />
+        <Tab label="RBC Unit B" {...a11yProps(3)} />
+        <Tab label="Secondary Clarifier Effluent" {...a11yProps(4)} />
+        <Tab label="Final Effluent" {...a11yProps(5)} />
+        <Tab label="Raw (primary) Sludge" {...a11yProps(6)} />
+        <Tab label="Biogas" {...a11yProps(7)} />
+        <Tab label="WAS (secondary sludge)" {...a11yProps(8)} />
+        <Tab label="Digester Sludge" {...a11yProps(9)} />
       </Tabs>
 
       <TabPanel value={value} index={0}>
-        <Line
-          data={lineChartData}
-          options={{
-            title: {
-              display: true,
-              text: 'Average Rainfall per month',
-              fontSize: 20
-            },
-            legend: {
-              display: true,
-              position: 'right'
-            }
-          }}/>
-
         <InfluentCalculator
           wwadf={wwadf}
           tss={tss}
@@ -240,9 +218,48 @@ function TabPage() {
           dataID={data ? data.id : ""}
           data={data}
         />
+
+        <Line
+          data={lineChartData}
+          options={{
+            title: {
+              display: true,
+              text: "Average Rainfall per month",
+              fontSize: 20,
+            },
+            legend: {
+              display: true,
+              position: "right",
+            },
+          }}
+        />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        tab2
+        Primary Clarifier Effluent
+      </TabPanel>
+      <TabPanel value={value} index={2}>
+        RBC Unit A
+      </TabPanel>
+      <TabPanel value={value} index={3}>
+        RBC Unit B
+      </TabPanel>
+      <TabPanel value={value} index={4}>
+        Secondary Clarifier Effluent
+      </TabPanel>
+      <TabPanel value={value} index={5}>
+        Final Effluent
+      </TabPanel>
+      <TabPanel value={value} index={6}>
+        Raw (primary) Sludge
+      </TabPanel>
+      <TabPanel value={value} index={7}>
+        Biogas
+      </TabPanel>
+      <TabPanel value={value} index={8}>
+        WAS (secondary sludge)
+      </TabPanel>
+      <TabPanel value={value} index={9}>
+        Digester Sludge
       </TabPanel>
     </div>
   );

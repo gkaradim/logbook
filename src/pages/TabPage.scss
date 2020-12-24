@@ -4,6 +4,7 @@
 
 .flowRate {
   width: 100%;
+  padding: 60px 100px;
 
   h2 {
     margin-bottom: 0 !important;
@@ -19,6 +20,15 @@
   }
   .react-datepicker-wrapper {
     margin-left: 100px;
+
+    input {
+      border: none;
+      border-bottom: 1px solid #2f405121;
+      background: #f9f9f9;
+      text-align: center;
+      outline: none;
+      cursor: pointer;
+    }
   }
 }
 .MuiTabs-root {
@@ -46,4 +56,8 @@
 }
 .react-datepicker-popper {
   z-index: 2 !important;
+}
+
+.chartjs-render-monitor {
+  margin: 120px 0;
 }

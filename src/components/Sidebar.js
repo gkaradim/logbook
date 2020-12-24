@@ -7,12 +7,19 @@ import Home from "../pages/Home";
 import TabPage from "../pages/TabPage";
 import Reports from "../pages/Reports";
 import About from "../pages/About";
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
 const Sidebar = () => {
   return (
     <>
       <div className={"Sidebar"}>
         <ul className={"Sidebar__list"}>
+          <li className={"Sidebar__listHeader"}>
+            <div className={"Sidebar__listIcon"}>
+              <AccountCircleIcon />
+            </div>
+            <div className={"Sidebar__listTitle"}>Mr. G</div>
+          </li>
           {SidebarData.map((val, key) => {
             return (
               <li

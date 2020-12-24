@@ -18,9 +18,10 @@ const InfluentCalculator = ({
   return (
     <div>
       <br />
+      <span> WWADF (m³/d)</span>
       <TextField
         id="filled-number"
-        label="WWADF"
+        // label="WWADF (m³/d)"
         type="number"
         variant="filled"
         value={wwadf}
@@ -34,7 +35,7 @@ const InfluentCalculator = ({
       <br />
       <TextField
         id="filled-number"
-        label="TSS"
+        label="TSS (mg/L)"
         type="number"
         variant="filled"
         value={tss}
