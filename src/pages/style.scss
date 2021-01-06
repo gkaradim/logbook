@@ -1,0 +1,48 @@
+.form {
+  h4 {
+    margin-bottom: 35px !important;
+    color: #57718c !important;
+  }
+  margin-top: 15px;
+  padding: 25px;
+  .column {
+    float: left;
+    /* padding: 10px; */
+  }
+
+  .leftColumn {
+    width: 35%;
+  }
+
+  .rightColumn {
+    width: 35%;
+  }
+
+  .form_input {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+
+    .input__label {
+      font-size: 14px;
+      min-width: 120px;
+      word-break: break-all;
+    }
+  }
+
+  .custom_textfield .MuiOutlinedInput-root {
+    position: relative;
+    border-radius: 0px;
+    height: 40px;
+    width: 130px;
+  }
+
+  .custom_textfield .MuiInputLabel-formControl {
+    top: -8px;
+    font-size: 14px;
+  }
+
+  .custom_textfield .MuiInputLabel-shrink {
+    top: 0px;
+  }
+}

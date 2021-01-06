@@ -11,10 +11,8 @@ import DatePicker from "react-datepicker";
 
 import axios from "axios";
 import moment from "moment";
-import { Line } from "react-chartjs-2";
 
-import CalculatorTwo from "./CalculatorTwo/CalculatorTwo";
-import InfluentCalculator from "./Influent/index";
+import RawInfluentCalculator from "./RawInfluent/index";
 
 import "./TabPage.scss";
 
@@ -45,30 +43,6 @@ function a11yProps(index) {
     "aria-controls": `scrollable-auto-tabpanel-${index}`,
   };
 }
-
-/* const lineChartData = {
-  labels: ['January', 'February', 'March','April', 'May','January', 'February', 'March','April', 'May'],
-  datasets: [
-    {
-      label: "Flow Rate",
-      fill: false,
-      lineTension: 0.5,
-      backgroundColor: "rgba(75,192,192,1)",
-      borderColor: "rgba(0,0,0,1)",
-      borderWidth: 2,
-      data: [200, 559, 680, 781, 256],
-    },
-    {
-      label: "TSS",
-      fill: false,
-      lineTension: 0.5,
-      backgroundColor: "red",
-      borderColor: "#ccc",
-      borderWidth: 2,
-      data: [1, 3, 5, 100, 30]
-    }
-  ]
-} */
 
 function TabPage() {
   const [data, setData] = useState(null);
@@ -123,7 +97,7 @@ function TabPage() {
 
       console.log(response);
 
-      if (response.status == 200) {
+      if (response.status === 200) {
         setData(data);
         setWwadf(data.wwadf);
         setTss(data.tss);
@@ -183,7 +157,7 @@ function TabPage() {
         textColor="primary"
         variant="scrollable"
         scrollButtons="auto"
-        aria-label="scrollable auto tabs example"
+        aria-label="scrollable auto tabs"
       >
         <Tab label="Raw Influent" {...a11yProps(0)} />
         <Tab label="Primary Clarifier Effluent" {...a11yProps(1)} />
@@ -198,21 +172,7 @@ function TabPage() {
       </Tabs>
 
       <TabPanel value={value} index={0}>
-        {/* <Line
-          data={lineChartData}
-          options={{
-            title: {
-              display: true,
-              text: 'Average Rainfall per month',
-              fontSize: 20
-            },
-            legend: {
-              display: true,
-              position: 'right'
-            }
-          }}/> */}
-
-        <InfluentCalculator
+        <RawInfluentCalculator
           wwadf={wwadf}
           tss={tss}
           total={data ? data.total : ""}
@@ -222,21 +182,6 @@ function TabPage() {
           isSeeOutputData={isSeeOutputData}
           dataID={data ? data.id : ""}
           data={data}
-        />
-
-        <Line
-          data={lineChartData}
-          options={{
-            title: {
-              display: true,
-              text: "Average Rainfall per month",
-              fontSize: 20,
-            },
-            legend: {
-              display: true,
-              position: "right",
-            },
-          }}
         />
       </TabPanel>
       <TabPanel value={value} index={1}>
