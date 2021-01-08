@@ -1,16 +1,9 @@
-import React, { useState, useEffect } from "react";
-
-// import { Tabs, Tab } from "react-bootstrap";
+import React from "react";
 
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
-
-import DatePicker from "react-datepicker";
-
-import axios from "axios";
-import moment from "moment";
 
 import RawInfluentCalculator from "./RawInfluent/index";
 
@@ -45,109 +38,17 @@ function a11yProps(index) {
 }
 
 function TabPage() {
-  const [data, setData] = useState(null);
-  const [date, setDate] = useState(new Date());
-
   const [value, setValue] = React.useState(0);
+  const [influentData, setInfluentData] = React.useState(null);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-  };
-
-  const [isSeeOutputData, setIsSeeOutputData] = useState(false);
-
-  const [wwadf, setWwadf] = useState("");
-  const [tss, setTss] = useState("");
-
-  useEffect(() => {
-    getTodayValues();
-  }, []);
-
-  const getTodayValues = async () => {
-    try {
-      const dateNew = moment(new Date()).format("YYYY-MM-DD");
-
-      const response = await axios.get(`/api/v1/influent`, {
-        params: { date: dateNew },
-      });
-
-      const data = response.data;
-
-      if (response.status === 200) {
-        setData(data);
-        setWwadf(data.wwadf);
-        setTss(data.tss);
-        setIsSeeOutputData(true);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const changeDate = async (date) => {
-    try {
-      setDate(date);
-      const dateNew = moment(date).format("YYYY-MM-DD");
-
-      const response = await axios.get(`/api/v1/influent`, {
-        params: { date: dateNew },
-      });
-
-      const data = response.data;
-
-      console.log(response);
-
-      if (response.status === 200) {
-        setData(data);
-        setWwadf(data.wwadf);
-        setTss(data.tss);
-        setIsSeeOutputData(true);
-      }
-    } catch (error) {
-      if (error.response) {
-        if (error.response.status === 404) {
-          setData(null);
-          setWwadf("");
-          setTss("");
-          setIsSeeOutputData(false);
-        }
-      }
-      console.log(error.response ? error.response : error);
-    }
-  };
-
-  const submitForm = async () => {
-    try {
-      if (!data) {
-        const dateNew = moment(date).toISOString();
-        const response = await axios.post("/api/v1/influent", {
-          date: dateNew,
-          wwadf: Number(wwadf),
-          tss: Number(tss),
-        });
-
-        const data = response.data;
-
-        if (response.status === 201) {
-          setData(data);
-          setIsSeeOutputData(true);
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   return (
     <div className="flowRate" style={{ paddingLeft: 260 }}>
       <div className={"flowRate__inner"}>
         <h2>Greek Log Book</h2>
-
-        <DatePicker
-          selected={date}
-          onChange={(date) => changeDate(date)}
-          maxDate={new Date()}
-        />
       </div>
 
       <Tabs
@@ -172,20 +73,11 @@ function TabPage() {
       </Tabs>
 
       <TabPanel value={value} index={0}>
-        <RawInfluentCalculator
-          wwadf={wwadf}
-          tss={tss}
-          total={data ? data.total : ""}
-          submitForm={submitForm}
-          setWwadf={setWwadf}
-          setTss={setTss}
-          isSeeOutputData={isSeeOutputData}
-          dataID={data ? data.id : ""}
-          data={data}
-        />
+        <RawInfluentCalculator setInfluentData={setInfluentData} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Primary Clarifier Effluent
+        Primary Clarifier Effluent<br/>
+        {influentData && influentData.tss}
       </TabPanel>
       <TabPanel value={value} index={2}>
         RBC Unit A
