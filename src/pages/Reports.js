@@ -1,99 +1,106 @@
 import React, { useState } from "react";
 
-import DatePicker from "react-datepicker";
-import { Line } from "react-chartjs-2";
-import moment from "moment";
-import axios from "axios";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
+
+import "./TabPage.scss";
+
+import RawInfluentReport from "./ReportRawInfluent";
+
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      className="tabs"
+      hidden={value !== index}
+      id={`scrollable-auto-tabpanel-${index}`}
+      aria-labelledby={`scrollable-auto-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box p={3}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+function a11yProps(index) {
+  return {
+    id: `scrollable-auto-tab-${index}`,
+    "aria-controls": `scrollable-auto-tabpanel-${index}`,
+  };
+}
 
 function Reports() {
-  //Use state methods for API and chart
-  const [startDate, setStartDate] = useState(new Date()); //New data is given because we need to render the component with Todays Data to show it.
-  const [endDate, setEndDate] = useState(null);
-  const [chartData, setData] = useState(null);
+  const [value, setValue] = useState(0);
 
-  //On change method to set startDate end endDate for the API
-  const onChange = (dates) => {
-    console.log(dates);
-    const [start, end] = dates;
-    setStartDate(start);
-    setEndDate(end);
-  };
-
-  const report = async () => {
-    //We are using moment to just format the data , if you want you can delete or use date-fns.
-    const from = moment(startDate).format("YYYY-MM-DD");
-    const to = moment(endDate).format("YYYY-MM-DD");
-    //request from API
-    const response = await axios.get("/api/v1/influent/out", {
-      params: { from, to },
-    });
-
-    const data = response.data;
-
-    //Chart dataset documentation. You can check website of the chart. It is documeneted there.
-    const chart = {
-      labels: data.map((d) => {
-        return moment(d.date).format("DD-MM-YYYY");
-      }), //Array map for the labels data as DATE.
-      datasets: [
-        {
-          label: "Tss",
-          fill: false,
-          lineTension: 0,
-          backgroundColor: "rgba(75,192,192,1)",
-          borderColor: "rgba(0,0,0,1)",
-          borderWidth: 1,
-          data: data.map((d) => {
-            return d.tss;
-          }), //Array map for the data as DATA.
-        },
-      ],
-    };
-    setData(chart);
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
   };
 
   return (
     <div className="container flowRate" style={{ paddingLeft: 240 }}>
-      <h1>Reports</h1>
-
-      <div className="row">
-        <div className="col-12">
-          Start Date
-          <DatePicker
-            selected={startDate}
-            onChange={onChange}
-            startDate={startDate}
-            endDate={endDate}
-            maxDate={new Date()}
-            selectsRange
-            inline
-          />{" "}
-          {/*  it returns dates array as response after we choose first and second date.  */}
-        </div>
-        <div className="col-sm-4">
-          <button onClick={report} className="btn btn-primary">
-            TSS Report
-          </button>
-        </div>
-        <div className="col-sm-8">
-          {chartData && (
-            <Line
-              data={chartData}
-              options={{
-                title: {
-                  display: true,
-                  text: "Average Tss",
-                  fontSize: 20,
-                },
-                legend: {
-                  display: true,
-                  position: "right",
-                },
-              }}
-            />
-          )}
-        </div>
+      <div className={"flowRate__inner"}>
+        <h2>Reports</h2>
       </div>
+
+      <Tabs
+        value={value}
+        onChange={handleChange}
+        indicatorColor="primary"
+        textColor="primary"
+        variant="scrollable"
+        scrollButtons="auto"
+        aria-label="scrollable auto tabs"
+      >
+        <Tab label="Raw Influent" {...a11yProps(0)} />
+        <Tab label="Primary Clarifier Effluent" {...a11yProps(1)} />
+        <Tab label="RBC Unit A" {...a11yProps(2)} />
+        <Tab label="RBC Unit B" {...a11yProps(3)} />
+        <Tab label="Secondary Clarifier Effluent" {...a11yProps(4)} />
+        <Tab label="Final Effluent" {...a11yProps(5)} />
+        <Tab label="Raw (primary) Sludge" {...a11yProps(6)} />
+        <Tab label="Biogas" {...a11yProps(7)} />
+        <Tab label="WAS (secondary sludge)" {...a11yProps(8)} />
+        <Tab label="Digester Sludge" {...a11yProps(9)} />
+      </Tabs>
+
+      <TabPanel value={value} index={0}>
+        <RawInfluentReport />
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+        Primary Clarifier Effluent
+      </TabPanel>
+      <TabPanel value={value} index={2}>
+        RBC Unit A
+      </TabPanel>
+      <TabPanel value={value} index={3}>
+        RBC Unit B
+      </TabPanel>
+      <TabPanel value={value} index={4}>
+        Secondary Clarifier Effluent
+      </TabPanel>
+      <TabPanel value={value} index={5}>
+        Final Effluent
+      </TabPanel>
+      <TabPanel value={value} index={6}>
+        Raw (primary) Sludge
+      </TabPanel>
+      <TabPanel value={value} index={7}>
+        Biogas
+      </TabPanel>
+      <TabPanel value={value} index={8}>
+        WAS (secondary sludge)
+      </TabPanel>
+      <TabPanel value={value} index={9}>
+        Digester Sludge
+      </TabPanel>
     </div>
   );
 }
