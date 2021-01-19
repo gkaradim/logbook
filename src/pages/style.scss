@@ -1,21 +1,14 @@
 .form {
   h4 {
-    margin-bottom: 35px !important;
+    margin-bottom: 20px !important;
     color: #57718c !important;
+    margin-top: 20px;
   }
-  margin-top: 15px;
+
   padding: 25px;
   .column {
     float: left;
     /* padding: 10px; */
-  }
-
-  .leftColumn {
-    width: 35%;
-  }
-
-  .rightColumn {
-    width: 35%;
   }
 
   .form_input {
@@ -25,15 +18,17 @@
 
     .input__label {
       font-size: 14px;
-      min-width: 120px;
+      min-width: 200px;
       word-break: break-all;
+      width: 200px;
+      margin-right: 20px;
     }
   }
 
   .custom_textfield .MuiOutlinedInput-root {
     position: relative;
     border-radius: 0px;
-    height: 40px;
+    height: 35px;
     width: 130px;
   }
 

@@ -2,3 +2,46 @@
   color: #2f4051 !important;
   border: 1px solid #2f4051 !important;
 }
+.leftColumn {
+  width: 35%;
+}
+
+.rightColumn {
+  width: 35%;
+}
+
+.innerForm {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 15px;
+}
+
+.form_title {
+  display: flex;
+  align-items: center;
+}
+
+.form {
+  .leftColumn {
+    width: 60%;
+    margin-top: 16px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .form_input {
+    flex: 1;
+    flex-basis: 33.33%;
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    // margin: 10px;
+    // flex-basis: calc(35% - 20px);
+    // box-sizing: border-box;
+  }
+  .outputData {
+    width: 40%;
+    margin-top: 16px;
+  }
+}

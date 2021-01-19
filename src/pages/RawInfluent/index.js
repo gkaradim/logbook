@@ -1,4 +1,4 @@
-import React, { useState, useEffect  } from "react";
+import React, { useState, useEffect } from "react";
 
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
@@ -12,13 +12,18 @@ import axios from "axios";
 import "./RawInfluent.scss";
 import "../style.scss";
 
-const RawInfluentCalculator = ({ setInfluentData }) => {
+const RawInfluent = ({ setInfluentData }) => {
   const [date, setDate] = useState(new Date());
   const [data, setData] = useState(null);
-  const [wwadf, setWwadf] = useState("");
-  const [tss, setTss] = useState("");
+  // const [wwadf, setWwadf] = useState("");
+  // const [tss, setTss] = useState("");
 
-  //const [inputDatas, setInputDatas] = useState({ wwadf: "", tss: "" })
+  const [inputDatas, setInputDatas] = useState({
+    name: "string",
+    value: 0,
+    measurementType: "string",
+    measurementUnit: "string",
+  });
 
   useEffect(() => {
     getTodayValues();
@@ -28,18 +33,24 @@ const RawInfluentCalculator = ({ setInfluentData }) => {
     try {
       const dateNew = moment(new Date()).format("YYYY-MM-DD");
 
-      const response = await axios.get(`/api/v1/influent`, {
+      const response = await axios.get(`/api/v1/influent/data`, {
         params: { date: dateNew },
       });
 
       const data = response.data;
+      console.log("getTodayValues", data);
 
       if (response.status === 200) {
         setData(data);
         setInfluentData(data);
-        //setInputDatas({ wwadf: data.wwadf, tss: data.tss })
-        setWwadf(data.wwadf);
-        setTss(data.tss);
+        setInputDatas({
+          name: data.name,
+          value: data.value,
+          measurementType: data.measurementType,
+          measurementUnit: data.measurementUnit,
+        });
+        // setWwadf(data.wwadf);
+        // setTss(data.tss);
       }
     } catch (error) {
       console.log(error);
@@ -51,19 +62,22 @@ const RawInfluentCalculator = ({ setInfluentData }) => {
       setDate(date);
       setData(null);
       setInfluentData(null);
-      setWwadf("");
-      setTss("");
+      // setWwadf("");
+      // setTss("");
 
       const dateNew = moment(date).format("YYYY-MM-DD");
-      const response = await axios.get(`/api/v1/influent`, {
+      const response = await axios.get(`/api/v1/influent/data`, {
         params: { date: dateNew },
       });
 
       const data = response.data;
+
+      console.log("changeDate", data);
+
       setData(data);
       setInfluentData(data);
-      setWwadf(data.wwadf);
-      setTss(data.tss);
+      // setWwadf(data.wwadf);
+      // setTss(data.tss);
     } catch (error) {
       if (error.response) {
         if (error.response.status === 404) {
@@ -71,9 +85,9 @@ const RawInfluentCalculator = ({ setInfluentData }) => {
           setInfluentData(null);
         }
       }
-      console.log(error.response ? error.response : error); 
+      console.log(error.response ? error.response : error);
     }
-  }
+  };
 
   const submitForm = async () => {
     try {
@@ -81,8 +95,8 @@ const RawInfluentCalculator = ({ setInfluentData }) => {
         const dateNew = moment(date).toISOString();
         const response = await axios.post("/api/v1/influent", {
           date: dateNew,
-          wwadf: Number(wwadf),
-          tss: Number(tss)
+          wwadf: Number(inputDatas.wwadf),
+          tss: Number(inputDatas.tss),
         });
 
         const data = response.data;
@@ -95,60 +109,51 @@ const RawInfluentCalculator = ({ setInfluentData }) => {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
-  // const setInputValue = (value, stateName) => {
-  //   setInputDatas({ ...inputDatas, [stateName] : value })
-  // }
+  const setInputValue = (value, stateName) => {
+    setInputDatas({ ...inputDatas, [stateName]: value });
+  };
 
   return (
     <div className={"form"}>
-      <h4>Plant Influent After Grit Removal (24HC)</h4>
-      <DatePicker selected={date} onChange={(date) => changeDate(date)} maxDate={new Date()} />
-
-      <div className={"leftColumn mt-5"}>
-        <div className={"form_input"}>
-          <span className={"input__label"}> WWADF (m³/d):</span>
-
-          {/* {<TextField
-            className={"custom_textfield"}
-            id="number"
-            label="m³/d"
-            type="number"
-            variant="outlined"
-            value={inputDatas.wwadf}
-            onChange={(e) => setInputValue(e.target.value, "wwadf")}
-          />} */}
-          <TextField
-            className={"custom_textfield"}
-            id="number"
-            label="m³/d"
-            type="number"
-            variant="outlined"
-            value={wwadf}
-            onChange={(e) => setWwadf(e.target.value)}
-            disabled={data}
-          />
-        </div>
-
-        <div className={"form_input"}>
-          <span className={"input__label"}> TSS (mg/L):</span>
-
-          <TextField
-            className={"custom_textfield"}
-            id="filled-number"
-            label="mg/L"
-            type="number"
-            variant="outlined"
-            value={tss}
-            onChange={(e) => setTss(e.target.value)}
-            disabled={data}
-          />
-        </div>
+      <div className={"form_title"}>
+        <h4>Plant Influent After Grit Removal (24HC)</h4>
+        <DatePicker
+          selected={date}
+          onChange={(date) => changeDate(date)}
+          maxDate={new Date()}
+        />
       </div>
+      <div className={"innerForm"}>
+        <div className={"leftColumn "}>
+          {data &&
+            data?.parameters?.map((item) => {
+              return (
+                <div className={"form_input"} key={item.name}>
+                  <span className={"input__label"}>
+                    {item.name} ({item.measurementUnit})
+                    <sub> {item.measurementType}</sub>
+                  </span>
 
-      <div className={"outputData"}>
-        {data && <OutPutTableData dataID={data.id} />}
+                  <TextField
+                    className={"custom_textfield"}
+                    id="number"
+                    label={item.measurementUnit}
+                    type="number"
+                    variant="outlined"
+                    value={item.value}
+                    onChange={(e) => setInputValue(e.target.value, item.name)}
+                    // disabled={data.parameters}
+                  />
+                </div>
+              );
+            })}
+        </div>
+
+        <div className={"outputData"}>
+          {data && <OutPutTableData dataID={data.id} />}
+        </div>
       </div>
 
       <div className={"formButton"}>
@@ -162,7 +167,7 @@ const RawInfluentCalculator = ({ setInfluentData }) => {
         </Button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default RawInfluentCalculator;
+export default RawInfluent;

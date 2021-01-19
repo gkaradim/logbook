@@ -7,7 +7,7 @@ import Box from "@material-ui/core/Box";
 
 import "./TabPage.scss";
 
-import RawInfluentReport from "./ReportRawInfluent";
+import RawInfluentReport from "./RawInfluentReport";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -45,9 +45,9 @@ function Reports() {
   };
 
   return (
-    <div className="container flowRate" style={{ paddingLeft: 240 }}>
+    <div className=" flowRate" style={{ paddingLeft: 260 }}>
       <div className={"flowRate__inner"}>
-        <h2>Reports</h2>
+        <h2>Log Book Reports</h2>
       </div>
 
       <Tabs
@@ -60,46 +60,30 @@ function Reports() {
         aria-label="scrollable auto tabs"
       >
         <Tab label="Raw Influent" {...a11yProps(0)} />
-        <Tab label="Primary Clarifier Effluent" {...a11yProps(1)} />
-        <Tab label="RBC Unit A" {...a11yProps(2)} />
-        <Tab label="RBC Unit B" {...a11yProps(3)} />
-        <Tab label="Secondary Clarifier Effluent" {...a11yProps(4)} />
-        <Tab label="Final Effluent" {...a11yProps(5)} />
-        <Tab label="Raw (primary) Sludge" {...a11yProps(6)} />
-        <Tab label="Biogas" {...a11yProps(7)} />
-        <Tab label="WAS (secondary sludge)" {...a11yProps(8)} />
-        <Tab label="Digester Sludge" {...a11yProps(9)} />
+        <Tab label="Primary Clarifier Stage" {...a11yProps(1)} />
+        <Tab label="RBC Stage" {...a11yProps(2)} />
+        <Tab label="Secondary Clarifier Stage" {...a11yProps(3)} />
+        <Tab label="Final Effluent" {...a11yProps(4)} />
+        <Tab label="Anaerobic Digestion Stage" {...a11yProps(5)} />
       </Tabs>
 
       <TabPanel value={value} index={0}>
         <RawInfluentReport />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Primary Clarifier Effluent
+        Primary Clarifier Stage
       </TabPanel>
       <TabPanel value={value} index={2}>
-        RBC Unit A
+        RBC Stage
       </TabPanel>
       <TabPanel value={value} index={3}>
-        RBC Unit B
+        Secondary Clarifier Stage
       </TabPanel>
       <TabPanel value={value} index={4}>
-        Secondary Clarifier Effluent
-      </TabPanel>
-      <TabPanel value={value} index={5}>
         Final Effluent
       </TabPanel>
-      <TabPanel value={value} index={6}>
-        Raw (primary) Sludge
-      </TabPanel>
-      <TabPanel value={value} index={7}>
-        Biogas
-      </TabPanel>
-      <TabPanel value={value} index={8}>
-        WAS (secondary sludge)
-      </TabPanel>
-      <TabPanel value={value} index={9}>
-        Digester Sludge
+      <TabPanel value={value} index={5}>
+        Anaerobic Digestion Stage
       </TabPanel>
     </div>
   );

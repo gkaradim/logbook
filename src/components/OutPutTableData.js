@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import "./OutPutTableData.scss";
 
 import axios from "axios";
 
 const OutPutTableData = ({ dataID }) => {
-  const [output, setOutput] = React.useState({});
+  const [data, setData] = useState(null);
+
   React.useEffect(() => {
     getOutput();
   }, []);
@@ -13,9 +14,12 @@ const OutPutTableData = ({ dataID }) => {
     try {
       const response = await axios.get(`/api/v1/influent/${dataID}`);
 
+      const data = response.data;
+
       if (response.status === 200) {
-        setOutput(response.data);
+        setData(data);
       }
+      console.log("CALCULATED DATA", data);
     } catch (err) {
       console.log(err);
     }
@@ -23,10 +27,18 @@ const OutPutTableData = ({ dataID }) => {
 
   return (
     <div className={"outPutTable"}>
-      <label>OUTPUT DATA</label>
-      <br />
-      <p>wwadf: {output.wwadf}</p>
-      <p>tss: {output.tss}</p>
+      <label>CALCULATED DATA</label>
+      {data &&
+        data?.parameters?.map((item) => {
+          return (
+            <div className={"form_input"} key={item.name}>
+              <span className={"input__label"}>
+                {item.name} <sub> {item.measurementType}</sub>
+                :({item.measurementUnit}) {item.value}
+              </span>
+            </div>
+          );
+        })}
     </div>
   );
 };
