@@ -152,7 +152,7 @@ const RawInfluent = ({ setInfluentData }) => {
         </div>
 
         <div className={"outputData"}>
-          {data && <OutPutTableData dataID={data.id} />}
+          {data && <OutPutTableData date={date} dataID={data.id} />}
         </div>
       </div>
 

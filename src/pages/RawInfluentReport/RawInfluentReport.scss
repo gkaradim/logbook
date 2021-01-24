@@ -4,6 +4,34 @@ h4 {
 
 .reports {
   padding: 25px;
+
+  .MuiTabs-root {
+    background-color: #f9f9f9;
+    box-shadow: none;
+  }
+
+  .MuiTabs-flexContainer {
+    display: flex;
+    width: auto;
+    justify-content: center;
+    align-items: center;
+  }
+
+  h4 {
+    margin-top: 20px;
+    text-align: center;
+  }
+  .form_calendar {
+    display: flex;
+    margin: auto;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+  }
+  .react-datepicker-wrapper {
+    margin-left: 0px !important;
+    margin-top: 25px;
+  }
 }
 
 .reportsBtns {

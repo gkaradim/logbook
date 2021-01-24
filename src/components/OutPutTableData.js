@@ -3,7 +3,7 @@ import "./OutPutTableData.scss";
 
 import axios from "axios";
 
-const OutPutTableData = ({ dataID }) => {
+const OutPutTableData = ({ dataID, date }) => {
   const [data, setData] = useState(null);
 
   React.useEffect(() => {
@@ -12,7 +12,9 @@ const OutPutTableData = ({ dataID }) => {
 
   const getOutput = async () => {
     try {
-      const response = await axios.get(`/api/v1/influent/${dataID}`);
+      const response = await axios.get(
+        `/api/v1/influent/data/calculated/${date}`
+      );
 
       const data = response.data;
 
