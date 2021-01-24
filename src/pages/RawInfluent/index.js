@@ -15,15 +15,9 @@ import "../style.scss";
 const RawInfluent = ({ setInfluentData }) => {
   const [date, setDate] = useState(new Date());
   const [data, setData] = useState(null);
-  // const [wwadf, setWwadf] = useState("");
-  // const [tss, setTss] = useState("");
 
-  const [inputDatas, setInputDatas] = useState({
-    name: "string",
-    value: 0,
-    measurementType: "string",
-    measurementUnit: "string",
-  });
+  const [inputDatas, setInputDatas] = useState([]);
+  const [comment, setComment] = useState("");
 
   useEffect(() => {
     getTodayValues();
@@ -34,23 +28,15 @@ const RawInfluent = ({ setInfluentData }) => {
       const dateNew = moment(new Date()).format("YYYY-MM-DD");
 
       const response = await axios.get(`/api/v1/influent/data`, {
-        params: { date: dateNew },
+        params: { date: dateNew }
       });
 
       const data = response.data;
-      console.log("getTodayValues", data);
 
       if (response.status === 200) {
-        setData(data);
+        setInputDatas(data.parameters);
         setInfluentData(data);
-        setInputDatas({
-          name: data.name,
-          value: data.value,
-          measurementType: data.measurementType,
-          measurementUnit: data.measurementUnit,
-        });
-        // setWwadf(data.wwadf);
-        // setTss(data.tss);
+        setData(data);
       }
     } catch (error) {
       console.log(error);
@@ -62,8 +48,6 @@ const RawInfluent = ({ setInfluentData }) => {
       setDate(date);
       setData(null);
       setInfluentData(null);
-      // setWwadf("");
-      // setTss("");
 
       const dateNew = moment(date).format("YYYY-MM-DD");
       const response = await axios.get(`/api/v1/influent/data`, {
@@ -71,13 +55,11 @@ const RawInfluent = ({ setInfluentData }) => {
       });
 
       const data = response.data;
+      
 
-      console.log("changeDate", data);
-
-      setData(data);
+      setInputDatas(data.parameters);
       setInfluentData(data);
-      // setWwadf(data.wwadf);
-      // setTss(data.tss);
+      setData(data);
     } catch (error) {
       if (error.response) {
         if (error.response.status === 404) {
@@ -91,28 +73,34 @@ const RawInfluent = ({ setInfluentData }) => {
 
   const submitForm = async () => {
     try {
-      if (!data) {
+      // if (!data) {
         const dateNew = moment(date).toISOString();
+        const parameters = inputDatas.map(d => {
+          return { ...d, value: Number(d.value) }
+        })
         const response = await axios.post("/api/v1/influent", {
-          date: dateNew,
-          wwadf: Number(inputDatas.wwadf),
-          tss: Number(inputDatas.tss),
+          parameters,
+          comments: comment,
+          date: dateNew
         });
 
         const data = response.data;
 
         if (response.status === 201) {
-          setData(data);
+          setInputDatas(data.parameters);
           setInfluentData(data);
+          setData(data);
         }
-      }
+      // }
     } catch (error) {
       console.log(error);
     }
   };
 
-  const setInputValue = (value, stateName) => {
-    setInputDatas({ ...inputDatas, [stateName]: value });
+  const setInputValue = (value, indexNumber) => {
+    let datas = [...inputDatas]
+    datas[indexNumber].value = value
+    setInputDatas(datas);
   };
 
   return (
@@ -128,9 +116,9 @@ const RawInfluent = ({ setInfluentData }) => {
       <div className={"innerForm"}>
         <div className={"leftColumn "}>
           {data &&
-            data?.parameters?.map((item) => {
+            data?.parameters?.map((item, i) => {
               return (
-                <div className={"form_input"} key={item.name}>
+                <div className={"form_input"} key={`${i}-raw`}>
                   <span className={"input__label"}>
                     {item.name} ({item.measurementUnit})
                     <sub> {item.measurementType}</sub>
@@ -142,13 +130,22 @@ const RawInfluent = ({ setInfluentData }) => {
                     label={item.measurementUnit}
                     type="number"
                     variant="outlined"
-                    value={item.value}
-                    onChange={(e) => setInputValue(e.target.value, item.name)}
+                    value={inputDatas[i].value}
+                    onChange={(e) => setInputValue(e.target.value, i)}
                     // disabled={data.parameters}
                   />
                 </div>
               );
             })}
+          {data && <TextField
+            className={"custom_textfield"}
+            id="number"
+            label="Comment"
+            variant="outlined"
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+          // disabled={data.parameters}
+          />}
         </div>
 
         <div className={"outputData"}>
