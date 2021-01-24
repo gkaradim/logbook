@@ -25,8 +25,13 @@ const ReportPerL = () => {
     const from = moment(startDate).format("YYYY-MM-DD");
     const to = moment(endDate).format("YYYY-MM-DD");
     //request from API
-    const response = await axios.get("/api/v1/influent/data/calculated", {
-      params: { from, to },
+    const response = await axios.get("/api/v1/influent/data/chart", {
+      params: {
+        ParameterName: "COD",
+        MeasurementUnit: "mg/l",
+        from, 
+        to
+      }
     });
 
     const data = response.data;
