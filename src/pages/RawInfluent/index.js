@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 
 import TextField from "@material-ui/core/TextField";
+import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+
 import Button from "@material-ui/core/Button";
 
 import OutPutTableData from "../../components/OutPutTableData";
@@ -28,7 +30,7 @@ const RawInfluent = ({ setInfluentData }) => {
       const dateNew = moment(new Date()).format("YYYY-MM-DD");
 
       const response = await axios.get(`/api/v1/influent/data`, {
-        params: { date: dateNew }
+        params: { date: dateNew },
       });
 
       const data = response.data;
@@ -55,7 +57,6 @@ const RawInfluent = ({ setInfluentData }) => {
       });
 
       const data = response.data;
-      
 
       setInputDatas(data.parameters);
       setInfluentData(data);
@@ -74,23 +75,23 @@ const RawInfluent = ({ setInfluentData }) => {
   const submitForm = async () => {
     try {
       // if (!data) {
-        const dateNew = moment(date).toISOString();
-        const parameters = inputDatas.map(d => {
-          return { ...d, value: Number(d.value) }
-        })
-        const response = await axios.post("/api/v1/influent", {
-          parameters,
-          comments: comment,
-          date: dateNew
-        });
+      const dateNew = moment(date).toISOString();
+      const parameters = inputDatas.map((d) => {
+        return { ...d, value: Number(d.value) };
+      });
+      const response = await axios.post("/api/v1/influent", {
+        parameters,
+        comments: comment,
+        date: dateNew,
+      });
 
-        const data = response.data;
+      const data = response.data;
 
-        if (response.status === 201) {
-          setInputDatas(data.parameters);
-          setInfluentData(data);
-          setData(data);
-        }
+      if (response.status === 201) {
+        setInputDatas(data.parameters);
+        setInfluentData(data);
+        setData(data);
+      }
       // }
     } catch (error) {
       console.log(error);
@@ -98,8 +99,8 @@ const RawInfluent = ({ setInfluentData }) => {
   };
 
   const setInputValue = (value, indexNumber) => {
-    let datas = [...inputDatas]
-    datas[indexNumber].value = value
+    let datas = [...inputDatas];
+    datas[indexNumber].value = value;
     setInputDatas(datas);
   };
 
@@ -114,42 +115,49 @@ const RawInfluent = ({ setInfluentData }) => {
         />
       </div>
       <div className={"innerForm"}>
-        <div className={"leftColumn "}>
-          {data &&
-            data?.parameters?.map((item, i) => {
-              return (
-                <div className={"form_input"} key={`${i}-raw`}>
-                  <span className={"input__label"}>
-                    {item.name} ({item.measurementUnit})
-                    <sub> {item.measurementType}</sub>
-                  </span>
+        <div className={"leftColumn"}>
+          <div className={"leftColumn__inner"}>
+            {data &&
+              data?.parameters?.map((item, i) => {
+                return (
+                  <div className={"form_input"} key={`${i}-raw`}>
+                    <span className={"input__label"}>
+                      {item.name} ({item.measurementUnit})
+                      <sub> {item.measurementType}</sub>
+                    </span>
 
-                  <TextField
-                    className={"custom_textfield"}
-                    id="number"
-                    label={item.measurementUnit}
-                    type="number"
-                    variant="outlined"
-                    value={inputDatas[i].value}
-                    onChange={(e) => setInputValue(e.target.value, i)}
-                    // disabled={data.parameters}
-                  />
-                </div>
-              );
-            })}
-          {data && <TextField
-            className={"custom_textfield"}
-            id="number"
-            label="Comment"
-            variant="outlined"
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-          // disabled={data.parameters}
-          />}
+                    <TextField
+                      className={"custom_textfield"}
+                      id="number"
+                      label={item.measurementUnit}
+                      type="number"
+                      variant="outlined"
+                      value={inputDatas[i].value}
+                      onChange={(e) => setInputValue(e.target.value, i)}
+                      // disabled={data.parameters}
+                    />
+                  </div>
+                );
+              })}
+          </div>
+          {data && (
+            <TextField
+              multiline
+              className={"formTextarea"}
+              rows={4}
+              rowsMax={4}
+              id="number"
+              label="Observations"
+              variant="outlined"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              // disabled={data.parameters}
+            />
+          )}
         </div>
 
         <div className={"outputData"}>
-          {data && <OutPutTableData date={date} dataID={data.id} />}
+          {data && <OutPutTableData date={date} />}
         </div>
       </div>
 

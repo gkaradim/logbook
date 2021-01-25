@@ -29,12 +29,32 @@ const ReportPerL = () => {
       params: {
         ParameterName: "COD",
         MeasurementUnit: "mg/l",
-        from, 
-        to
-      }
+        from,
+        to,
+      },
     });
 
     const data = response.data;
+
+    console.log("data", data);
+
+    const chartName = data.map((item) => {
+      item.parameters.map((i) => {
+        return i.name;
+      });
+    });
+    const ChartMeasurementType = data.map((item) => {
+      item.parameters.map((i) => {
+        return i.measurementType;
+      });
+    });
+    const chartValue = data.map((item) => {
+      item.parameters.map((i) => {
+        return i.value;
+      });
+    });
+
+    // console.log("chartdata", chartData);
 
     //Chart dataset documentation. You can check website of the chart. It is documeneted there.
     const chart = {
@@ -43,14 +63,14 @@ const ReportPerL = () => {
       }), //Array map for the labels data as DATE.
       datasets: [
         {
-          label: "Tss",
+          label: "TSS",
           fill: false,
           lineTension: 0,
           backgroundColor: "rgba(75,192,192,1)",
           borderColor: "rgba(0,0,0,1)",
           borderWidth: 1,
           data: data.map((d) => {
-            return d.tss;
+            return d.cod;
           }), //Array map for the data as DATA.
         },
       ],

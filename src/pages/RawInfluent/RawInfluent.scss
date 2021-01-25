@@ -25,9 +25,13 @@
   .leftColumn {
     width: 60%;
     margin-top: 16px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    display: block;
+
+    &__inner {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
   }
 
   .form_input {
@@ -43,5 +47,11 @@
   .outputData {
     width: 40%;
     margin-top: 16px;
+  }
+
+  .formTextarea {
+    margin: 40px 0;
+    width: 80%;
+    height: auto !important;
   }
 }

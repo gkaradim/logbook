@@ -13,7 +13,9 @@ const OutPutTableData = ({ dataID, date }) => {
 
   const getOutput = async () => {
     try {
-      const response = await axios.get(`/api/v1/influent/data/calculated?date=${moment(date).toISOString()}`);
+      const response = await axios.get(
+        `/api/v1/influent/data/calculated?date=${moment(date).toISOString()}`
+      );
 
       const data = response.data;
 
@@ -29,13 +31,15 @@ const OutPutTableData = ({ dataID, date }) => {
   return (
     <div className={"outPutTable"}>
       <label>CALCULATED DATA</label>
+      <br />
       {data &&
-        data?.parameters?.map((item) => {
+        data[0]?.parameters?.map((item) => {
+          console.log(item);
           return (
             <div className={"form_input"} key={item.name}>
               <span className={"input__label"}>
-                {item.name} <sub> {item.measurementType}</sub>
-                :({item.measurementUnit}) {item.value}
+                {item.name} <sub> {item.measurementType}</sub> (
+                {item.measurementUnit}) : {item.value}
               </span>
             </div>
           );
