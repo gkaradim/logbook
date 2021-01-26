@@ -6,11 +6,16 @@ import { Line } from "react-chartjs-2";
 import moment from "moment";
 import axios from "axios";
 
+import { parametersArray } from '../../utils/parameters'
+
 const ReportPerL = () => {
   //Use state methods for API and chart
   const [startDate, setStartDate] = useState(new Date()); //New data is given because we need to render the component with Todays Data to show it.
   const [endDate, setEndDate] = useState(null);
   const [chartData, setData] = useState(null);
+  const [MeasurementUnit, setMeasurementUnit] = useState(null)
+  const [ParameterName, setParameterName] = useState(null)
+
   const formStr2 = "DD/MM/yyyy";
 
   //On change method to set startDate end endDate for the API
@@ -24,17 +29,42 @@ const ReportPerL = () => {
     //We are using moment to just format the data , if you want you can delete or use date-fns.
     const from = moment(startDate).format("YYYY-MM-DD");
     const to = moment(endDate).format("YYYY-MM-DD");
+    const paramName = ParameterName
+    const unit = MeasurementUnit
     //request from API
     const response = await axios.get("/api/v1/influent/data/chart", {
       params: {
-        ParameterName: "COD",
-        MeasurementUnit: "mg/l",
+        MeasurementUnit: unit,
+        ParameterName: paramName,
         from,
         to,
       },
     });
 
     const data = response.data;
+
+    const datasets = data.map(d => {
+      return {
+        label: `${paramName} ${d.parameters[0].measurementType}`,
+        fill: false,
+        lineTension: 0,
+        backgroundColor: "rgba(75,192,192,1)",
+        borderColor: "rgba(0,0,0,1)",
+        borderWidth: 1,
+        data: d.parameters.map(p => p.value)
+      }
+    })
+
+    console.log(response.data)
+
+    const chart = {
+      labels: data.map(d => moment(d.date).format("DD-MM-YYYY")),
+      datasets
+    }
+
+    setData(chart);
+
+   /*  const data = response.data;
 
     console.log("data", data);
 
@@ -75,8 +105,13 @@ const ReportPerL = () => {
         },
       ],
     };
-    setData(chart);
+    setData(chart); */
   };
+
+  const setParam = (param) => {
+    setParameterName(param.name)
+    setMeasurementUnit(param.measurementUnit)
+  }
 
   const inputValue =
     moment(`${startDate}`).format(formStr2) +
@@ -86,6 +121,12 @@ const ReportPerL = () => {
   return (
     <>
       <div className="col-12">
+        <div className="col-12">
+          {parametersArray.map(param => {
+            return <Button variant="outlined" size="medium" color="primary" onClick={() => setParam(param)}>{`${param.name} ${param.measurementUnit} ${param.measurementType}`}</Button>
+          })}
+        </div>
+
         <div className={"form_calendar"}>
           <DatePicker
             selected={null}
@@ -108,7 +149,7 @@ const ReportPerL = () => {
             color="primary"
             onClick={report}
           >
-            TSS Total-Disolved (mg/l)
+            Submit
           </Button>
         </div>
       </div>
@@ -130,6 +171,7 @@ const ReportPerL = () => {
             }}
           />
         )}
+        {JSON.stringify(chartData)}
       </div>
     </>
   );
