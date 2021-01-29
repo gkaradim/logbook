@@ -63,7 +63,7 @@ const ReportPerL = () => {
       }), //Array map for the labels data as DATE.
       datasets: [
         {
-          label: "TSS",
+          label: "TSS222",
           fill: false,
           lineTension: 0,
           backgroundColor: "rgba(75,192,192,1)",
