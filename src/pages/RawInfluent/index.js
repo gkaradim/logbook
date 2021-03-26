@@ -47,6 +47,7 @@ const RawInfluent = ({ setInfluentData }) => {
 
   const changeDate = async (date) => {
     try {
+      console.log(date);
       setDate(date);
       setData(null);
       setInfluentData(null);
@@ -104,15 +105,33 @@ const RawInfluent = ({ setInfluentData }) => {
     setInputDatas(datas);
   };
 
+  const prevDate = () => {
+    const currentDate = date;
+    currentDate.setDate(currentDate.getDate() - 1);
+    changeDate(currentDate);
+  };
+
+  const nextDate = () => {
+    const currentDate = date;
+    currentDate.setDate(currentDate.getDate() + 1);
+    changeDate(currentDate);
+  };
+
   return (
     <div className={"form"}>
       <div className={"form_title"}>
         <h4>Plant Influent After Grit Removal (24HC)</h4>
-        <DatePicker
-          selected={date}
-          onChange={(date) => changeDate(date)}
-          maxDate={new Date()}
-        />
+        <div>
+          <button onClick={() => prevDate()}> prev </button>
+
+          <DatePicker
+            selected={date}
+            onChange={(date) => changeDate(date)}
+            maxDate={new Date()}
+          />
+
+          <button onClick={() => nextDate()}> next </button>
+        </div>
       </div>
       <div className={"innerForm"}>
         <div className={"leftColumn"}>
