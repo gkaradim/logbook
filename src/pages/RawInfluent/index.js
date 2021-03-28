@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 
 import TextField from "@material-ui/core/TextField";
-import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
+import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 
 import Button from "@material-ui/core/Button";
 
@@ -47,7 +48,6 @@ const RawInfluent = ({ setInfluentData }) => {
 
   const changeDate = async (date) => {
     try {
-      console.log(date);
       setDate(date);
       setData(null);
       setInfluentData(null);
@@ -117,21 +117,29 @@ const RawInfluent = ({ setInfluentData }) => {
     changeDate(currentDate);
   };
 
+  const formStr2 = "dddd, DD MMMM";
+  const inputValue = moment(`${date}`).format(formStr2);
+
   return (
     <div className={"form"}>
       <div className={"form_title"}>
         <h4>Plant Influent After Grit Removal (24HC)</h4>
-        <div>
-          <button onClick={() => prevDate()}> prev </button>
+        <div className={"form_title__calendar"}>
+          <span className={"form_title__icon"} onClick={() => prevDate()}>
+            <NavigateBeforeIcon />
+          </span>
 
           <DatePicker
             selected={date}
             onChange={(date) => changeDate(date)}
             maxDate={new Date()}
+            dateFormat="cccc, d MMMM" // 'cccc' is not correct, it uses the old formatting from date-fns and should be replaced with 'dddd' once it is fixed in react-datepicker
           />
-
-          <button onClick={() => nextDate()}> next </button>
+          <span className={"form_title__icon"} onClick={() => nextDate()}>
+            <NavigateNextIcon />
+          </span>
         </div>
+        <span className={"form_title__dateRight"}>{inputValue}</span>
       </div>
       <div className={"innerForm"}>
         <div className={"leftColumn"}>
@@ -139,7 +147,11 @@ const RawInfluent = ({ setInfluentData }) => {
             {data &&
               data?.parameters?.map((item, i) => {
                 return (
-                  <div className={"form_input"} key={`${i}-raw`}>
+                  <div
+                    className={"form_input"}
+                    key={`${i}-raw`}
+                    id={`form_input-${i}`}
+                  >
                     <span className={"input__label"}>
                       {item.name} ({item.measurementUnit})
                       <sub> {item.measurementType}</sub>
@@ -153,7 +165,6 @@ const RawInfluent = ({ setInfluentData }) => {
                       variant="outlined"
                       value={inputDatas[i].value}
                       onChange={(e) => setInputValue(e.target.value, i)}
-                      // disabled={data.parameters}
                     />
                   </div>
                 );
@@ -168,9 +179,8 @@ const RawInfluent = ({ setInfluentData }) => {
               id="number"
               label="Observations"
               variant="outlined"
-              value={comment}
+              value={data.comments}
               onChange={(e) => setComment(e.target.value)}
-              // disabled={data.parameters}
             />
           )}
         </div>

@@ -35,13 +35,13 @@ h4 {
 }
 
 .reportsBtns {
-  margin-top: 25px;
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  max-width: 35%;
+  margin: auto;
+  justify-content: center;
+  padding-top: 50px;
   button {
-    margin-right: 20px;
     margin-bottom: 20px;
   }
 }

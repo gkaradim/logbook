@@ -22,7 +22,6 @@ const OutPutTableData = ({ dataID, date }) => {
       if (response.status === 200) {
         setData(data);
       }
-      console.log("CALCULATED DATA", data);
     } catch (err) {
       console.log(err);
     }
@@ -33,14 +32,14 @@ const OutPutTableData = ({ dataID, date }) => {
       <label>CALCULATED DATA</label>
       <br />
       {data &&
-        data[0]?.parameters?.map((item) => {
-          console.log(item);
+        data[0]?.parameters?.map((item, i) => {
           return (
-            <div className={"form_input"} key={item.name}>
+            <div className={"form_input"} key={`${i}-outp`}>
               <span className={"input__label"}>
                 {item.name} <sub> {item.measurementType}</sub> (
-                {item.measurementUnit}) : {item.value}
+                {item.measurementUnit}) :
               </span>
+              <span>{item.value}</span>
             </div>
           );
         })}

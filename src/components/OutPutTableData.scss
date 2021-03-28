@@ -15,4 +15,12 @@
   .form_input .input__label {
     width: 100% !important;
   }
+
+  .form_input {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    border: 1px solid;
+    padding: 5px;
+  }
 }
