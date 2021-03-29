@@ -32,7 +32,7 @@ const RawInfluent = ({ setInfluentData }) => {
       const dateNew = moment(new Date()).format("YYYY-MM-DD");
 
       const response = await axios.get(
-        `${packageJson.proxy}/api/v1/influent/data`,
+        `https://easy-log-book-api.herokuapp.com/api/v1/influent/data`,
         {
           params: { date: dateNew },
         }
