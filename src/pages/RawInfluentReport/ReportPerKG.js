@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
+import { API_URL } from "utils/config";
 
 import DatePicker from "react-datepicker";
 import { Line } from "react-chartjs-2";
@@ -27,7 +28,7 @@ const ReportPerL = () => {
     const from = moment(startDate).format("YYYY-MM-DD");
     const to = moment(endDate).format("YYYY-MM-DD");
     //request from API
-    const response = await axios.get("/api/v1/influent/data/chart", {
+    const response = await axios.get(`${API_URL}/api/v1/influent/data/chart`, {
       params: {
         MeasurementUnit: "kg/day",
         from,

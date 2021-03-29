@@ -54,7 +54,7 @@ const RawInfluent = ({ setInfluentData }) => {
       setInfluentData(null);
 
       const dateNew = moment(date).format("YYYY-MM-DD");
-      const response = await axios.get(`/api/v1/influent/data`, {
+      const response = await axios.get(`${API_URL}/api/v1/influent/data`, {
         params: { date: dateNew },
       });
 
@@ -81,7 +81,7 @@ const RawInfluent = ({ setInfluentData }) => {
       const parameters = inputDatas.map((d) => {
         return { ...d, value: Number(d.value) };
       });
-      const response = await axios.post("/api/v1/influent", {
+      const response = await axios.post(`${API_URL}/api/v1/influent`, {
         parameters,
         comments: comment,
         date: dateNew,

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Button from "@material-ui/core/Button";
+import { API_URL } from "utils/config";
 
 import DatePicker from "react-datepicker";
 import { HorizontalBar } from "react-chartjs-2";
@@ -15,7 +16,7 @@ const ReportPerL = () => {
   const report = async () => {
     //We are using moment to just format the data , if you want you can delete or use date-fns.
     //request from API
-    const response = await axios.get("/api/v1/influent/data/chart", {
+    const response = await axios.get(`${API_URL}/api/v1/influent/data/chart`, {
       params: {
         MeasurementUnit: "mg/l",
         date,

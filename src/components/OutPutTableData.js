@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./OutPutTableData.scss";
+import { API_URL } from "utils/config";
 
 import axios from "axios";
 import moment from "moment";
@@ -14,7 +15,9 @@ const OutPutTableData = ({ dataID, date }) => {
   const getOutput = async () => {
     try {
       const response = await axios.get(
-        `/api/v1/influent/data/calculated?date=${moment(date).toISOString()}`
+        `${API_URL}/api/v1/influent/data/calculated?date=${moment(
+          date
+        ).toISOString()}`
       );
 
       const data = response.data;
