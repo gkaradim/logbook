@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import TextField from "@material-ui/core/TextField";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import packageJson from "../../../package.json";
 
 import Button from "@material-ui/core/Button";
 
@@ -30,9 +31,12 @@ const RawInfluent = ({ setInfluentData }) => {
     try {
       const dateNew = moment(new Date()).format("YYYY-MM-DD");
 
-      const response = await axios.get(`/api/v1/influent/data`, {
-        params: { date: dateNew },
-      });
+      const response = await axios.get(
+        `${packageJson.proxy}/api/v1/influent/data`,
+        {
+          params: { date: dateNew },
+        }
+      );
 
       const data = response.data;
 
