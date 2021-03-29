@@ -118,7 +118,7 @@ const RawInfluent = ({ setInfluentData }) => {
     changeDate(currentDate);
   };
 
-  const formStr2 = "dddd, DD MMMM";
+  const formStr2 = "dddd, DD MMMM YYYY";
   const inputValue = moment(`${date}`).format(formStr2);
 
   return (
