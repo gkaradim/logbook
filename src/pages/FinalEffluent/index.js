@@ -13,11 +13,11 @@ import DatePicker from "react-datepicker";
 import moment from "moment";
 import axios from "axios";
 
-import "./RawInfluent.scss";
+import "./FinalEffluent.scss";
 import "../style.scss";
 import { ListItemAvatar, ListItemSecondaryAction } from "@material-ui/core";
 
-const RawInfluent = ({ setInfluentData }) => {
+const FinalEffluent = ({ setFinalEffluentData }) => {
   const [date, setDate] = useState(new Date());
   const [data, setData] = useState(null);
   const [calculatedData, setCalculatedData] = useState([]);
@@ -35,7 +35,7 @@ const RawInfluent = ({ setInfluentData }) => {
 
       const response = await axios.get(`${API_URL}/api/v1/stages`, {
         params: {
-          Stage: "Raw Influent",
+          Stage: "Final Effluent",
           Date: dateNew,
         },
       });
@@ -59,7 +59,7 @@ const RawInfluent = ({ setInfluentData }) => {
       if (response.status === 200) {
         setInputDatas(dataInputs);
         // setCalculatedData(calculatedData);
-        setInfluentData(data);
+        setFinalEffluentData(data);
 
         setData(data);
       }
@@ -74,12 +74,12 @@ const RawInfluent = ({ setInfluentData }) => {
     try {
       setDate(date);
       setData(null);
-      setInfluentData(null);
+      setFinalEffluentData(null);
 
       const dateNew = moment(date).format("YYYY-MM-DD");
       const response = await axios.get(`${API_URL}/api/v1/stages`, {
         params: {
-          Stage: "Raw Influent",
+          Stage: "Final Effluent",
           Date: dateNew,
         },
       });
@@ -98,13 +98,13 @@ const RawInfluent = ({ setInfluentData }) => {
 
       setInputDatas(dataInputs);
       // setCalculatedData(calculatedData);
-      setInfluentData(data);
+      setFinalEffluentData(data);
       setData(data);
     } catch (error) {
       if (error.response) {
         if (error.response.status === 404) {
           setData(null);
-          setInfluentData(null);
+          setFinalEffluentData(null);
         }
       }
       console.log(error.response ? error.response : error);
@@ -123,10 +123,10 @@ const RawInfluent = ({ setInfluentData }) => {
         return item;
       });
       const response = await axios.post(`${API_URL}/api/v1/stages`, {
-        Stage: "Raw Influent",
+        Stage: "Final Effluent",
         Units: [
           {
-            name: "Plant Influent",
+            name: "Final Effluent",
             measurements: [
               {
                 date: dateNew,
@@ -216,7 +216,7 @@ const RawInfluent = ({ setInfluentData }) => {
               dataInputs?.map((item, i) => {
                 return (
                   <div
-                    className={"form_input"}
+                    className={"form_input form_input_finalEffluent"}
                     key={`${i}-raw`}
                     id={`form_input-${i}`}
                   >
@@ -273,4 +273,4 @@ const RawInfluent = ({ setInfluentData }) => {
   );
 };
 
-export default RawInfluent;
+export default FinalEffluent;

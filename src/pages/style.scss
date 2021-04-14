@@ -1,8 +1,6 @@
 .form {
   h4 {
-    margin-bottom: 20px !important;
     color: #57718c !important;
-    margin-top: 20px;
   }
 
   padding: 25px;
@@ -18,9 +16,9 @@
 
     .input__label {
       font-size: 14px;
-      min-width: 200px;
+      min-width: 152px;
+      max-width: 152px;
       word-break: break-all;
-      width: 200px;
       margin-right: 20px;
     }
   }
@@ -29,7 +27,7 @@
     position: relative;
     border-radius: 0px;
     height: 35px;
-    width: 130px;
+    width: 120px;
   }
 
   .custom_textfield .MuiInputLabel-formControl {

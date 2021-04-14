@@ -13,11 +13,11 @@ import DatePicker from "react-datepicker";
 import moment from "moment";
 import axios from "axios";
 
-import "./RawInfluent.scss";
+import "./AnaerobicDigestion.scss";
 import "../style.scss";
 import { ListItemAvatar, ListItemSecondaryAction } from "@material-ui/core";
 
-const RawInfluent = ({ setInfluentData }) => {
+const AnaerobicDigestion = ({ setAnaerobicDigestionData }) => {
   const [date, setDate] = useState(new Date());
   const [data, setData] = useState(null);
   const [calculatedData, setCalculatedData] = useState([]);
@@ -35,7 +35,7 @@ const RawInfluent = ({ setInfluentData }) => {
 
       const response = await axios.get(`${API_URL}/api/v1/stages`, {
         params: {
-          Stage: "Raw Influent",
+          Stage: "Anaerobic Digestion",
           Date: dateNew,
         },
       });
@@ -59,7 +59,7 @@ const RawInfluent = ({ setInfluentData }) => {
       if (response.status === 200) {
         setInputDatas(dataInputs);
         // setCalculatedData(calculatedData);
-        setInfluentData(data);
+        setAnaerobicDigestionData(data);
 
         setData(data);
       }
@@ -74,12 +74,12 @@ const RawInfluent = ({ setInfluentData }) => {
     try {
       setDate(date);
       setData(null);
-      setInfluentData(null);
+      setAnaerobicDigestionData(null);
 
       const dateNew = moment(date).format("YYYY-MM-DD");
       const response = await axios.get(`${API_URL}/api/v1/stages`, {
         params: {
-          Stage: "Raw Influent",
+          Stage: "Anaerobic Digestion",
           Date: dateNew,
         },
       });
@@ -98,13 +98,13 @@ const RawInfluent = ({ setInfluentData }) => {
 
       setInputDatas(dataInputs);
       // setCalculatedData(calculatedData);
-      setInfluentData(data);
+      setAnaerobicDigestionData(data);
       setData(data);
     } catch (error) {
       if (error.response) {
         if (error.response.status === 404) {
           setData(null);
-          setInfluentData(null);
+          setAnaerobicDigestionData(null);
         }
       }
       console.log(error.response ? error.response : error);
@@ -123,10 +123,28 @@ const RawInfluent = ({ setInfluentData }) => {
         return item;
       });
       const response = await axios.post(`${API_URL}/api/v1/stages`, {
-        Stage: "Raw Influent",
+        Stage: "Anaerobic Digestion",
         Units: [
           {
-            name: "Plant Influent",
+            name: "Digester Sludge",
+            measurements: [
+              {
+                date: dateNew,
+                data: dataInputs,
+              },
+            ],
+          },
+          {
+            name: "Trucked Sludge",
+            measurements: [
+              {
+                date: dateNew,
+                data: dataInputs,
+              },
+            ],
+          },
+          {
+            name: "Biogas",
             measurements: [
               {
                 date: dateNew,
@@ -178,10 +196,8 @@ const RawInfluent = ({ setInfluentData }) => {
   const formStr2 = "dddd, DD MMMM YYYY";
   const dateValueRight = moment(`${date}`).format(formStr2);
 
-  const unitName = data?.units.map((item) => {
-    return item.name;
-  });
-
+  const unitLeftName = data?.units[0].name;
+  const unitRightName = data?.units[1].name;
   const dataInputs = data?.units[0]?.measurements[0].data.map((item) => {
     return item;
   });
@@ -209,9 +225,9 @@ const RawInfluent = ({ setInfluentData }) => {
         <span className={"form_title__dateRight"}>{dateValueRight}</span>
       </div>
       <div className={"innerForm"}>
-        <div className={"leftColumn"}>
-          <h4>{unitName}</h4>
-          <div className={"leftColumn__inner"}>
+        <div className={"column"}>
+          <h4>{unitLeftName}</h4>
+          <div className={"column__inner"}>
             {data &&
               dataInputs?.map((item, i) => {
                 return (
@@ -237,27 +253,56 @@ const RawInfluent = ({ setInfluentData }) => {
                 );
               })}
           </div>
-          {data && (
-            <TextField
-              multiline
-              className={"formTextarea"}
-              rows={4}
-              rowsMax={4}
-              id="number"
-              label="Observations"
-              variant="outlined"
-              value={data.comments}
-              onChange={(e) => setComment(e.target.value)}
-            />
-          )}
         </div>
+        <div className={"column"}>
+          <h4>{unitRightName}</h4>
+          <div className={"column__inner"}>
+            {data &&
+              dataInputs?.map((item, i) => {
+                return (
+                  <div
+                    className={"form_input"}
+                    key={`${i}-raw`}
+                    id={`form_input-${i}`}
+                  >
+                    <span className={"input__label"}>
+                      {item.name} ({item.measurementUnit})
+                      <sub> {item.measurementType}</sub>
+                    </span>
 
-        {calculatedData.length > 0 && (
-          <div className={"outputData"}>
-            <OutPutTableData date={date} />}
+                    <TextField
+                      className={"custom_textfield"}
+                      id="number"
+                      type="number"
+                      variant="outlined"
+                      value={inputDatas[i].value}
+                      onChange={(e) => setInputValue(e.target.value, i)}
+                    />
+                  </div>
+                );
+              })}
           </div>
-        )}
+        </div>
       </div>
+      {data && (
+        <TextField
+          multiline
+          className={"formTextarea"}
+          rows={4}
+          rowsMax={4}
+          id="number"
+          label="Observations"
+          variant="outlined"
+          value={data.comments}
+          onChange={(e) => setComment(e.target.value)}
+        />
+      )}
+
+      {calculatedData.length > 0 && (
+        <div className={"outputData"}>
+          <OutPutTableData date={date} />}
+        </div>
+      )}
 
       <div className={"formButton"}>
         <Button
@@ -273,4 +318,4 @@ const RawInfluent = ({ setInfluentData }) => {
   );
 };
 
-export default RawInfluent;
+export default AnaerobicDigestion;

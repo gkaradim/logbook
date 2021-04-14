@@ -5,7 +5,12 @@ import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 
-import RawInfluent from "./RawInfluent/index";
+import RawInfluent from "./RawInfluent";
+import PrimaryClarifier from "./PrimaryClarifier";
+import Rbc from "./RBC";
+import SecondaryClarifier from "./SecondaryClarifier";
+import FinalEffluent from "./FinalEffluent";
+import AnaerobicDigestion from "./AnaerobicDigestion";
 
 import "./TabPage.scss";
 
@@ -40,6 +45,15 @@ function a11yProps(index) {
 function TabPage() {
   const [value, setValue] = React.useState(0);
   const [influentData, setInfluentData] = React.useState(null);
+  const [primaryClarifierData, setPrimaryClarifierData] = React.useState(null);
+  const [rbcData, setRbcData] = React.useState(null);
+  const [secondaryClarifierData, setSecondaryClarifierData] = React.useState(
+    null
+  );
+  const [finalEffluentData, setFinalEffluentData] = React.useState(null);
+  const [anaerobicDigestionData, setAnaerobicDigestionData] = React.useState(
+    null
+  );
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -72,21 +86,23 @@ function TabPage() {
         <RawInfluent setInfluentData={setInfluentData} />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Primary Clarifier Stage
-        <br />
-        {influentData && influentData.tss}
+        <PrimaryClarifier setPrimaryClarifierData={setPrimaryClarifierData} />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        RBC Stage
+        <Rbc setRbcData={setRbcData} />
       </TabPanel>
       <TabPanel value={value} index={3}>
-        Secondary Clarifier Stage
+        <SecondaryClarifier
+          setSecondaryClarifierData={setSecondaryClarifierData}
+        />
       </TabPanel>
       <TabPanel value={value} index={4}>
-        Final Effluent
+        <FinalEffluent setFinalEffluentData={setFinalEffluentData} />
       </TabPanel>
       <TabPanel value={value} index={5}>
-        Anaerobic Digestion Stage
+        <AnaerobicDigestion
+          setAnaerobicDigestionData={setAnaerobicDigestionData}
+        />
       </TabPanel>
     </div>
   );

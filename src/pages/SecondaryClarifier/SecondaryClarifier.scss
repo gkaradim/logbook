@@ -11,9 +11,7 @@
 }
 
 .innerForm {
-  display: flex;
-  align-items: flex-start;
-  margin-top: 15px;
+  display: block;
 }
 
 .form_title {
@@ -36,9 +34,8 @@
 }
 
 .form {
-  .leftColumn {
-    width: 60%;
-    display: block;
+  .column {
+    width: 40%;
 
     h4 {
       margin: 60px 0 35px;
@@ -47,7 +44,7 @@
     &__inner {
       display: block;
       flex-flow: column;
-      column-count: 2;
+      column-count: 1;
     }
   }
 
