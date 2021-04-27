@@ -113,7 +113,6 @@ const RawInfluent = ({ setInfluentData }) => {
 
   const submitForm = async () => {
     try {
-      // if (!data) {
       const dateNew = moment(date).toISOString();
 
       const calculatedData = data?.units.map(
@@ -148,7 +147,6 @@ const RawInfluent = ({ setInfluentData }) => {
         // setInfluentData(data);
         // setData(data);
       }
-      // }
     } catch (error) {
       console.log(error);
     }
@@ -156,7 +154,7 @@ const RawInfluent = ({ setInfluentData }) => {
 
   const setInputValue = (value, indexNumber) => {
     let datas = [...inputDatas];
-    datas[indexNumber].value = value;
+    datas[indexNumber].value = Number(value);
     setInputDatas(datas);
 
     console.log("datas", datas);
@@ -228,10 +226,16 @@ const RawInfluent = ({ setInfluentData }) => {
                     <TextField
                       className={"custom_textfield"}
                       id="number"
-                      type="number"
                       variant="outlined"
                       value={inputDatas[i].value}
-                      onChange={(e) => setInputValue(e.target.value, i)}
+                      onChange={(e) => {
+                        const re = /^[0-9\b]+$/;
+                        if (e.target.value === "" || re.test(e.target.value)) {
+                          setInputValue(e.target.value, i);
+                        } else {
+                          setInputValue("", i);
+                        }
+                      }}
                     />
                   </div>
                 );
@@ -254,7 +258,7 @@ const RawInfluent = ({ setInfluentData }) => {
 
         {calculatedData.length > 0 && (
           <div className={"outputData"}>
-            <OutPutTableData date={date} />}
+            <OutPutTableData date={date} />
           </div>
         )}
       </div>

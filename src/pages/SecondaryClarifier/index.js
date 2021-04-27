@@ -165,7 +165,7 @@ const SecondaryClarifier = ({ setSecondaryClarifierData }) => {
 
   const setInputValue = (value, indexNumber) => {
     let datas = [...inputDatas];
-    datas[indexNumber].value = value;
+    datas[indexNumber].value = Number(value);
     setInputDatas(datas);
 
     console.log("datas", datas);
@@ -235,10 +235,16 @@ const SecondaryClarifier = ({ setSecondaryClarifierData }) => {
                     <TextField
                       className={"custom_textfield"}
                       id="number"
-                      type="number"
                       variant="outlined"
                       value={inputDatas[i].value}
-                      onChange={(e) => setInputValue(e.target.value, i)}
+                      onChange={(e) => {
+                        const re = /^[0-9\b]+$/;
+                        if (e.target.value === "" || re.test(e.target.value)) {
+                          setInputValue(e.target.value, i);
+                        } else {
+                          setInputValue("", i);
+                        }
+                      }}
                     />
                   </div>
                 );
