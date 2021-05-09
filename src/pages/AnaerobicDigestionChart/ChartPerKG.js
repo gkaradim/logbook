@@ -47,8 +47,22 @@ const ReportPerL = () => {
           datasets.push({
             fill: false,
             lineTension: 0,
-            backgroundColor: "rgba(75,192,192,1)",
-            borderColor: "rgba(0,0,0,1)",
+            backgroundColor:
+              "rgb(" +
+              Math.floor(Math.random() * 430 + 200) +
+              "," +
+              Math.floor(Math.random() * 430 + 200) +
+              "," +
+              Math.floor(Math.random() * 430 + 200) +
+              ")",
+            borderColor:
+              "rgb(" +
+              Math.floor(Math.random() * 130 + 100) +
+              "," +
+              Math.floor(Math.random() * 130 + 100) +
+              "," +
+              Math.floor(Math.random() * 130 + 100) +
+              ")",
             borderWidth: 1,
             label: `${p.name} ${p.measurementType}`,
             data: [p.value],
@@ -106,7 +120,7 @@ const ReportPerL = () => {
         </div>
       </div>
 
-      <div className="col-12 col-md-9">
+      <div className="col-12">
         {chartData && (
           <Line
             data={chartData}

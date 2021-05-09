@@ -209,6 +209,7 @@ const RawInfluent = () => {
                       className={"custom_textfield"}
                       id="number"
                       variant="outlined"
+                      // disabled={inputDatas[i].value}
                       value={inputDatas[i].value}
                       onChange={(e) => {
                         const re = /^[0-9\b]+$/;

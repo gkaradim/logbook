@@ -6,6 +6,10 @@ import DatePicker from "react-datepicker";
 import { Line } from "react-chartjs-2";
 import moment from "moment";
 import axios from "axios";
+import {
+  LocalConvenienceStoreOutlined,
+  SlowMotionVideoOutlined,
+} from "@material-ui/icons";
 
 const ReportPerL = () => {
   //Use state methods for API and chart
@@ -40,6 +44,38 @@ const ReportPerL = () => {
 
     console.log("data", response.data);
 
+    var graphColors = [];
+    var graphOutlines = [];
+    var hoverColor = [];
+
+    var internalDataLength = data?.units[0]?.measurements.length;
+
+    console.log("internalDataLength", internalDataLength);
+
+    var i = 0;
+    while (i <= internalDataLength) {
+      console.log("test");
+      var randomR = Math.floor(Math.random() * 130 + 100);
+      var randomG = Math.floor(Math.random() * 130 + 100);
+      var randomB = Math.floor(Math.random() * 130 + 100);
+
+      var graphBackground =
+        "rgb(" + randomR + ", " + randomG + ", " + randomB + ")";
+      graphColors.push(graphBackground);
+
+      var graphOutline =
+        "rgb(" +
+        (randomR - 80) +
+        ", " +
+        (randomG - 80) +
+        ", " +
+        (randomB - 80) +
+        ")";
+      graphOutlines.push(graphOutline);
+
+      i++;
+    }
+
     let datasets = [];
     data?.units[0]?.measurements?.forEach((d, index) => {
       if (index == 0) {
@@ -47,8 +83,22 @@ const ReportPerL = () => {
           datasets.push({
             fill: false,
             lineTension: 0,
-            backgroundColor: "rgba(75,192,192,1)",
-            borderColor: "rgba(0,0,0,1)",
+            backgroundColor:
+              "rgb(" +
+              Math.floor(Math.random() * 430 + 200) +
+              "," +
+              Math.floor(Math.random() * 430 + 200) +
+              "," +
+              Math.floor(Math.random() * 430 + 200) +
+              ")",
+            borderColor:
+              "rgb(" +
+              Math.floor(Math.random() * 130 + 100) +
+              "," +
+              Math.floor(Math.random() * 130 + 100) +
+              "," +
+              Math.floor(Math.random() * 130 + 100) +
+              ")",
             borderWidth: 1,
             label: `${p.name} ${p.measurementType}`,
             data: [p.value],
@@ -106,7 +156,7 @@ const ReportPerL = () => {
         </div>
       </div>
 
-      <div className="col-12 col-md-9">
+      <div className="col-12">
         {chartData && (
           <Line
             data={chartData}
