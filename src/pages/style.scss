@@ -1,3 +1,37 @@
+.MuiOutlinedInput-input {
+  padding: 18.5px 5px;
+}
+
+.outPutTable {
+  border: 1px dotted black;
+  padding: 15px;
+  display: block;
+  max-width: 60%;
+  height: auto;
+  margin: 115px 15px;
+  width: auto;
+  min-width: 345px;
+
+  label {
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  .form_input .input__label {
+    width: 100% !important;
+  }
+
+  .form_input {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    border: 1px solid;
+    padding: 5px;
+  }
+  .form_input {
+    justify-content: space-between;
+  }
+}
 .form {
   h4 {
     color: #57718c !important;
@@ -12,7 +46,7 @@
   .form_input {
     display: flex;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 21px;
 
     .input__label {
       font-size: 14px;
@@ -27,7 +61,7 @@
     position: relative;
     border-radius: 0px;
     height: 35px;
-    width: 120px;
+    width: 80px;
   }
 
   .custom_textfield .MuiInputLabel-formControl {

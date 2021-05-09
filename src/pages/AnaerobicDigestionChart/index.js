@@ -5,11 +5,10 @@ import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 
-import ReportPerL from "./ReportPerL";
-import ReportPerKG from "./ReportPerKG";
-import ReportPerMonth from "./ReportPerMonth";
+import ChartPerL from "./ChartPerL";
+import ChartPerKG from "./ChartPerKG";
 
-import "./RawInfluentReport.scss";
+import "../chartStyle.scss";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -39,7 +38,7 @@ function a11yProps(index) {
   };
 }
 
-const RawInfluentReport = () => {
+const AnaerobicDigestionChart = () => {
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
@@ -60,21 +59,17 @@ const RawInfluentReport = () => {
         >
           <Tab label="Per MG" {...a11yProps(0)} />
           <Tab label="Per KG" {...a11yProps(1)} />
-          <Tab label="Per Month" {...a11yProps(2)} />
         </Tabs>
-        <h4>Plant Influent After Grit Removal (24HC)</h4>
+        <h4>Anaerobic Digestion After Grit Removal (24HC)</h4>
         <TabPanel value={value} index={0}>
-          <ReportPerL />
+          <ChartPerL />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          <ReportPerKG />
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          <ReportPerMonth />
+          <ChartPerKG />
         </TabPanel>
       </div>
     </div>
   );
 };
 
-export default RawInfluentReport;
+export default AnaerobicDigestionChart;

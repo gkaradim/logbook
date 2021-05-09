@@ -16,9 +16,9 @@ export const SidebarData = [
     link: "/tabs",
   },
   {
-    title: "Reports",
+    title: "Charts",
     icon: <TimelineIcon />,
-    link: "/reports",
+    link: "/charts",
   },
   {
     title: "About",

@@ -7,7 +7,12 @@ import Box from "@material-ui/core/Box";
 
 import "./TabPage.scss";
 
-import RawInfluentReport from "./RawInfluentReport";
+import RawInfluentChart from "./RawInfluentChart";
+import PrimaryClarifierChart from "./PrimaryClarifierChart";
+import RBCChart from "./RBCChart";
+import SecondaryClarifierChart from "./SecondaryClarifierChart";
+import FinalEffluentChart from "./FinalEffluentChart";
+import AnaerobicDigestionChart from "./AnaerobicDigestionChart";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -37,7 +42,7 @@ function a11yProps(index) {
   };
 }
 
-function Reports() {
+function Charts() {
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
@@ -47,7 +52,7 @@ function Reports() {
   return (
     <div className=" flowRate" style={{ paddingLeft: 260 }}>
       <div className={"flowRate__inner"}>
-        <h2>Log Book Reports</h2>
+        <h2>Log Book Charts</h2>
       </div>
 
       <Tabs
@@ -68,25 +73,25 @@ function Reports() {
       </Tabs>
 
       <TabPanel value={value} index={0}>
-        <RawInfluentReport />
+        <RawInfluentChart />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Primary Clarifier Stage
+        <PrimaryClarifierChart />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        RBC Stage
+        <RBCChart />
       </TabPanel>
       <TabPanel value={value} index={3}>
-        Secondary Clarifier Stage
+        <SecondaryClarifierChart />
       </TabPanel>
       <TabPanel value={value} index={4}>
-        Final Effluent
+        <FinalEffluentChart />
       </TabPanel>
       <TabPanel value={value} index={5}>
-        Anaerobic Digestion Stage
+        <AnaerobicDigestionChart />
       </TabPanel>
     </div>
   );
 }
 
-export default Reports;
+export default Charts;

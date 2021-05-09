@@ -12,9 +12,6 @@ const ReportPerL = () => {
   const [startDate, setStartDate] = useState(new Date()); //New data is given because we need to render the component with Todays Data to show it.
   const [endDate, setEndDate] = useState(null);
   const [chartData, setData] = useState(null);
-  const [MeasurementUnit, setMeasurementUnit] = useState(null);
-
-  const formStr2 = "DD/MM/yyyy";
 
   //On change method to set startDate end endDate for the API
   const onChange = (dates) => {
@@ -28,9 +25,11 @@ const ReportPerL = () => {
     const from = moment(startDate).format("YYYY-MM-DD");
     const to = moment(endDate).format("YYYY-MM-DD");
     //request from API
-    const response = await axios.get(`${API_URL}/api/v1/influent/data/chart`, {
+
+    const response = await axios.get(`${API_URL}/api/v1/charts`, {
       params: {
-        MeasurementUnit: "kg/day",
+        Stage: "RBC",
+        Type: "data_daily_average",
         from,
         to,
       },
@@ -41,9 +40,9 @@ const ReportPerL = () => {
     console.log("data", response.data);
 
     let datasets = [];
-    data.forEach((d, index) => {
+    data?.units[0]?.measurements?.forEach((d, index) => {
       if (index == 0) {
-        d.parameters.forEach((p) => {
+        d.data.forEach((p) => {
           datasets.push({
             fill: false,
             lineTension: 0,
@@ -55,19 +54,23 @@ const ReportPerL = () => {
           });
         });
       } else {
-        d.parameters.forEach((p, index) => {
+        d.data.forEach((p, index) => {
           datasets[index].data.push(p.value);
         });
       }
     });
 
     const chart = {
-      labels: data.map((d) => moment(d.date).format("DD-MM-YYYY")),
+      labels: data?.units[0]?.measurements.map((d) =>
+        moment(d.date).format("DD-MM-YYYY")
+      ),
       datasets,
     };
 
     setData(chart);
   };
+
+  const formStr2 = "DD/MM/yyyy";
 
   const inputValue =
     moment(`${startDate}`).format(formStr2) +

@@ -15,9 +15,8 @@ import axios from "axios";
 
 import "./FinalEffluent.scss";
 import "../style.scss";
-import { ListItemAvatar, ListItemSecondaryAction } from "@material-ui/core";
 
-const FinalEffluent = ({ setFinalEffluentData }) => {
+const FinalEffluent = () => {
   const [date, setDate] = useState(new Date());
   const [data, setData] = useState(null);
   const [calculatedData, setCalculatedData] = useState([]);
@@ -52,29 +51,20 @@ const FinalEffluent = ({ setFinalEffluentData }) => {
         (i) => i.measurements[0]?.calculatedData
       );
 
-      // const calculatedData2 = data?.units[0].measurements[0].calculatedData;
-
-      // console.log("calculatedData2", calculatedData2);
-
       if (response.status === 200) {
         setInputDatas(dataInputs);
-        // setCalculatedData(calculatedData);
-        setFinalEffluentData(data);
-
         setData(data);
+        setCalculatedData(calculatedData);
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  console.log("data", data);
-
   const changeDate = async (date) => {
     try {
       setDate(date);
       setData(null);
-      setFinalEffluentData(null);
 
       const dateNew = moment(date).format("YYYY-MM-DD");
       const response = await axios.get(`${API_URL}/api/v1/stages`, {
@@ -97,14 +87,12 @@ const FinalEffluent = ({ setFinalEffluentData }) => {
       );
 
       setInputDatas(dataInputs);
-      // setCalculatedData(calculatedData);
-      setFinalEffluentData(data);
       setData(data);
+      setCalculatedData(calculatedData);
     } catch (error) {
       if (error.response) {
         if (error.response.status === 404) {
           setData(null);
-          setFinalEffluentData(null);
         }
       }
       console.log(error.response ? error.response : error);
@@ -113,7 +101,6 @@ const FinalEffluent = ({ setFinalEffluentData }) => {
 
   const submitForm = async () => {
     try {
-      // if (!data) {
       const dateNew = moment(date).toISOString();
 
       const calculatedData = data?.units.map(
@@ -138,17 +125,10 @@ const FinalEffluent = ({ setFinalEffluentData }) => {
         comments: comment,
       });
 
-      // const data = response.data;
-
-      console.log("dataInputsssssss", dataInputs);
-
       if (response.status === 201) {
         setInputDatas(dataInputs);
-        // setCalculatedData(calculatedData);
-        // setInfluentData(data);
-        // setData(data);
+        setCalculatedData(calculatedData);
       }
-      // }
     } catch (error) {
       console.log(error);
     }
@@ -158,9 +138,6 @@ const FinalEffluent = ({ setFinalEffluentData }) => {
     let datas = [...inputDatas];
     datas[indexNumber].value = Number(value);
     setInputDatas(datas);
-
-    console.log("datas", datas);
-    console.log("inputDatas", inputDatas);
   };
 
   const prevDate = () => {
@@ -185,8 +162,6 @@ const FinalEffluent = ({ setFinalEffluentData }) => {
   const dataInputs = data?.units[0]?.measurements[0].data.map((item) => {
     return item;
   });
-
-  // console.log("calculatedData", calculatedData);
 
   return (
     <div className={"form"}>
@@ -259,8 +234,22 @@ const FinalEffluent = ({ setFinalEffluentData }) => {
         </div>
 
         {calculatedData.length > 0 && (
-          <div className={"outputData"}>
-            <OutPutTableData date={date} />}
+          <div className={"outPutTable"}>
+            <label>CALCULATED DATA</label>
+            {data &&
+              data?.units[0]?.measurements[0]?.calculatedData?.map(
+                (item, i) => {
+                  return (
+                    <div className={"form_input"} key={`${i}-outp`}>
+                      <span className={"input__label"}>
+                        {item.name} <sub> {item.measurementType}</sub> (
+                        {item.measurementUnit}) :
+                      </span>
+                      <span>{item.value}</span>
+                    </div>
+                  );
+                }
+              )}
           </div>
         )}
       </div>

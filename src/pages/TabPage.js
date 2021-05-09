@@ -44,16 +44,6 @@ function a11yProps(index) {
 
 function TabPage() {
   const [value, setValue] = React.useState(0);
-  const [influentData, setInfluentData] = React.useState(null);
-  const [primaryClarifierData, setPrimaryClarifierData] = React.useState(null);
-  const [rbcData, setRbcData] = React.useState(null);
-  const [secondaryClarifierData, setSecondaryClarifierData] = React.useState(
-    null
-  );
-  const [finalEffluentData, setFinalEffluentData] = React.useState(null);
-  const [anaerobicDigestionData, setAnaerobicDigestionData] = React.useState(
-    null
-  );
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -83,26 +73,22 @@ function TabPage() {
       </Tabs>
 
       <TabPanel value={value} index={0}>
-        <RawInfluent setInfluentData={setInfluentData} />
+        <RawInfluent />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <PrimaryClarifier setPrimaryClarifierData={setPrimaryClarifierData} />
+        <PrimaryClarifier />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        <Rbc setRbcData={setRbcData} />
+        <Rbc />
       </TabPanel>
       <TabPanel value={value} index={3}>
-        <SecondaryClarifier
-          setSecondaryClarifierData={setSecondaryClarifierData}
-        />
+        <SecondaryClarifier />
       </TabPanel>
       <TabPanel value={value} index={4}>
-        <FinalEffluent setFinalEffluentData={setFinalEffluentData} />
+        <FinalEffluent />
       </TabPanel>
       <TabPanel value={value} index={5}>
-        <AnaerobicDigestion
-          setAnaerobicDigestionData={setAnaerobicDigestionData}
-        />
+        <AnaerobicDigestion />
       </TabPanel>
     </div>
   );

@@ -5,7 +5,7 @@ import { SidebarData } from "./SidebarData";
 import { Switch, Route } from "react-router-dom";
 import Home from "../pages/Home";
 import TabPage from "../pages/TabPage";
-import Reports from "../pages/Reports";
+import Charts from "../pages/Charts";
 import About from "../pages/About";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
@@ -45,8 +45,8 @@ const Sidebar = () => {
         <Route path="/tabs">
           <TabPage />
         </Route>
-        <Route path="/reports">
-          <Reports />
+        <Route path="/charts">
+          <Charts />
         </Route>
         <Route path="/about">
           <About />

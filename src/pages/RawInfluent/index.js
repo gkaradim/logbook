@@ -3,21 +3,21 @@ import React, { useState, useEffect } from "react";
 import TextField from "@material-ui/core/TextField";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import { CircularProgress } from "@material-ui/core";
+import InputAdornment from "@material-ui/core/InputAdornment";
 import { API_URL } from "utils/config";
 
 import Button from "@material-ui/core/Button";
-
-import OutPutTableData from "../../components/OutPutTableData";
 
 import DatePicker from "react-datepicker";
 import moment from "moment";
 import axios from "axios";
 
 import "./RawInfluent.scss";
-import "../style.scss";
-import { ListItemAvatar, ListItemSecondaryAction } from "@material-ui/core";
+// import "../style.scss";
 
-const RawInfluent = ({ setInfluentData }) => {
+const RawInfluent = () => {
+  const [loading, setLoading] = React.useState(false);
   const [date, setDate] = useState(new Date());
   const [data, setData] = useState(null);
   const [calculatedData, setCalculatedData] = useState([]);
@@ -52,29 +52,20 @@ const RawInfluent = ({ setInfluentData }) => {
         (i) => i.measurements[0]?.calculatedData
       );
 
-      // const calculatedData2 = data?.units[0].measurements[0].calculatedData;
-
-      // console.log("calculatedData2", calculatedData2);
-
       if (response.status === 200) {
         setInputDatas(dataInputs);
-        // setCalculatedData(calculatedData);
-        setInfluentData(data);
-
         setData(data);
+        setCalculatedData(calculatedData);
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  console.log("data", data);
-
   const changeDate = async (date) => {
     try {
       setDate(date);
       setData(null);
-      setInfluentData(null);
 
       const dateNew = moment(date).format("YYYY-MM-DD");
       const response = await axios.get(`${API_URL}/api/v1/stages`, {
@@ -97,14 +88,12 @@ const RawInfluent = ({ setInfluentData }) => {
       );
 
       setInputDatas(dataInputs);
-      // setCalculatedData(calculatedData);
-      setInfluentData(data);
       setData(data);
+      setCalculatedData(calculatedData);
     } catch (error) {
       if (error.response) {
         if (error.response.status === 404) {
           setData(null);
-          setInfluentData(null);
         }
       }
       console.log(error.response ? error.response : error);
@@ -112,6 +101,7 @@ const RawInfluent = ({ setInfluentData }) => {
   };
 
   const submitForm = async () => {
+    setLoading(true);
     try {
       const dateNew = moment(date).toISOString();
 
@@ -137,15 +127,10 @@ const RawInfluent = ({ setInfluentData }) => {
         comments: comment,
       });
 
-      // const data = response.data;
-
-      console.log("dataInputsssssss", dataInputs);
-
       if (response.status === 201) {
         setInputDatas(dataInputs);
-        // setCalculatedData(calculatedData);
-        // setInfluentData(data);
-        // setData(data);
+        setCalculatedData(calculatedData);
+        setLoading(false);
       }
     } catch (error) {
       console.log(error);
@@ -156,9 +141,6 @@ const RawInfluent = ({ setInfluentData }) => {
     let datas = [...inputDatas];
     datas[indexNumber].value = Number(value);
     setInputDatas(datas);
-
-    console.log("datas", datas);
-    console.log("inputDatas", inputDatas);
   };
 
   const prevDate = () => {
@@ -184,7 +166,7 @@ const RawInfluent = ({ setInfluentData }) => {
     return item;
   });
 
-  // console.log("calculatedData", calculatedData);
+  console.log("calculatedData", calculatedData);
 
   return (
     <div className={"form"}>
@@ -257,8 +239,22 @@ const RawInfluent = ({ setInfluentData }) => {
         </div>
 
         {calculatedData.length > 0 && (
-          <div className={"outputData"}>
-            <OutPutTableData date={date} />
+          <div className={"outPutTable"}>
+            <label>CALCULATED DATA</label>
+            {data &&
+              data?.units[0]?.measurements[0]?.calculatedData?.map(
+                (item, i) => {
+                  return (
+                    <div className={"form_input"} key={`${i}-outp`}>
+                      <span className={"input__label"}>
+                        {item.name} <sub> {item.measurementType}</sub> (
+                        {item.measurementUnit}) :
+                      </span>
+                      <span>{item.value}</span>
+                    </div>
+                  );
+                }
+              )}
           </div>
         )}
       </div>
@@ -269,6 +265,13 @@ const RawInfluent = ({ setInfluentData }) => {
           size="medium"
           color="primary"
           onClick={submitForm}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                {loading && <CircularProgress color="primary" size={20} />}
+              </InputAdornment>
+            ),
+          }}
         >
           Submit
         </Button>

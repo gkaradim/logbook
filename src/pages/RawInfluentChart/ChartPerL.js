@@ -25,9 +25,11 @@ const ReportPerL = () => {
     const from = moment(startDate).format("YYYY-MM-DD");
     const to = moment(endDate).format("YYYY-MM-DD");
     //request from API
-    const response = await axios.get(`${API_URL}/api/v1/influent/data/chart`, {
+
+    const response = await axios.get(`${API_URL}/api/v1/charts`, {
       params: {
-        MeasurementUnit: "mg/l",
+        Stage: "Raw Influent",
+        Type: "data_daily_average",
         from,
         to,
       },
@@ -38,9 +40,9 @@ const ReportPerL = () => {
     console.log("data", response.data);
 
     let datasets = [];
-    data.forEach((d, index) => {
+    data?.units[0]?.measurements?.forEach((d, index) => {
       if (index == 0) {
-        d.parameters.forEach((p) => {
+        d.data.forEach((p) => {
           datasets.push({
             fill: false,
             lineTension: 0,
@@ -52,14 +54,16 @@ const ReportPerL = () => {
           });
         });
       } else {
-        d.parameters.forEach((p, index) => {
+        d.data.forEach((p, index) => {
           datasets[index].data.push(p.value);
         });
       }
     });
 
     const chart = {
-      labels: data.map((d) => moment(d.date).format("DD-MM-YYYY")),
+      labels: data?.units[0]?.measurements.map((d) =>
+        moment(d.date).format("DD-MM-YYYY")
+      ),
       datasets,
     };
 
