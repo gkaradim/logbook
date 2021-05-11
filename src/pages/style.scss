@@ -12,6 +12,16 @@
   width: auto;
   min-width: 345px;
 
+  .outPutTable .form_input:nth-child(odd) {
+    background: #586a7b;
+    border: none;
+  }
+
+  .outPutTable .form_input:nth-child(even) {
+    background: #677c90;
+    border: none;
+  }
+
   label {
     display: block;
     margin-bottom: 10px;

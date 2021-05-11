@@ -6,12 +6,14 @@ import DatePicker from "react-datepicker";
 import { Line } from "react-chartjs-2";
 import moment from "moment";
 import axios from "axios";
+import "chartjs-plugin-zoom";
 
 const ReportPerL = () => {
   //Use state methods for API and chart
   const [startDate, setStartDate] = useState(new Date()); //New data is given because we need to render the component with Todays Data to show it.
   const [endDate, setEndDate] = useState(null);
   const [chartData, setData] = useState(null);
+  const [options, setOptions] = useState(null);
 
   //On change method to set startDate end endDate for the API
   const onChange = (dates) => {
@@ -44,6 +46,7 @@ const ReportPerL = () => {
           datasets.push({
             fill: false,
             lineTension: 0,
+
             backgroundColor:
               "rgb(" +
               Math.floor(Math.random() * 430 + 200) +
@@ -79,7 +82,35 @@ const ReportPerL = () => {
       datasets,
     };
 
+    const initialOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+      title: {
+        display: true,
+        text: "Chart",
+        fontSize: 20,
+      },
+      legend: {
+        display: true,
+        position: "top",
+      },
+
+      animation: {
+        duration: 0,
+      },
+      zoom: {
+        enabled: true,
+        mode: "x",
+      },
+      pan: {
+        enabled: true,
+        mode: "x",
+      },
+    };
+
     setData(chart);
+
+    setOptions(initialOptions);
   };
 
   const formStr2 = "DD/MM/yyyy";
@@ -123,17 +154,18 @@ const ReportPerL = () => {
         {chartData && (
           <Line
             data={chartData}
-            options={{
-              title: {
-                display: true,
-                text: "Chart",
-                fontSize: 20,
-              },
-              legend: {
-                display: true,
-                position: "right",
-              },
-            }}
+            options={options}
+            // options={{
+            //   title: {
+            //     display: true,
+            //     text: "Chart",
+            //     fontSize: 20,
+            //   },
+            //   legend: {
+            //     display: true,
+            //     position: "top",
+            //   },
+            // }}
           />
         )}
       </div>
