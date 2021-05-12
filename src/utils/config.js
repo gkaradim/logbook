@@ -1,1 +1,1 @@
-export const API_URL = "https://easy-log-book-api.herokuapp.com";
+export const API_URL = "https://greek-log-book-ui-api.azurewebsites.net";
