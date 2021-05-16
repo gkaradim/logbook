@@ -4,6 +4,9 @@ import TextField from "@material-ui/core/TextField";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import { API_URL } from "utils/config";
+import Dialog from "@material-ui/core/Dialog";
+import DialogContent from "@material-ui/core/DialogContent";
+import CloseIcon from "@material-ui/icons/Close";
 
 import Button from "@material-ui/core/Button";
 
@@ -23,6 +26,16 @@ const FinalEffluent = () => {
 
   const [inputDatas, setInputDatas] = useState([]);
   const [comment, setComment] = useState("");
+
+  const [removeCalculatedModal, setRemoveCalculatedModal] = React.useState({
+    show: false,
+  });
+
+  const handleOpenCalculated = () => {
+    setRemoveCalculatedModal({
+      show: true,
+    });
+  };
 
   useEffect(() => {
     getTodayValues();
@@ -152,6 +165,11 @@ const FinalEffluent = () => {
     changeDate(currentDate);
   };
 
+  const todaysDate = () => {
+    const currentDate = new Date();
+    changeDate(currentDate);
+  };
+
   const formStr2 = "dddd, DD MMMM YYYY";
   const dateValueRight = moment(`${date}`).format(formStr2);
 
@@ -169,6 +187,7 @@ const FinalEffluent = () => {
         <div className={"form_title__calendar"}>
           <span className={"form_title__icon"} onClick={() => prevDate()}>
             <NavigateBeforeIcon />
+            Previous Day
           </span>
 
           <DatePicker
@@ -178,10 +197,20 @@ const FinalEffluent = () => {
             dateFormat="cccc, d MMMM" // 'cccc' is not correct, it uses the old formatting from date-fns and should be replaced with 'dddd' once it is fixed in react-datepicker
           />
           <span className={"form_title__icon"} onClick={() => nextDate()}>
+            Next Day
             <NavigateNextIcon />
           </span>
+          <span
+            className={"form_title__icon--today"}
+            onClick={() => todaysDate()}
+          >
+            Today
+          </span>
         </div>
-        <span className={"form_title__dateRight"}>{dateValueRight}</span>
+        <span className={"form_title__dateRight--outter"}>
+          Selected Date:
+          <span className={"form_title__dateRight"}>{dateValueRight}</span>
+        </span>
       </div>
       <div className={"innerForm"}>
         <div className={"leftColumn"}>
@@ -195,25 +224,30 @@ const FinalEffluent = () => {
                     key={`${i}-raw`}
                     id={`form_input-${i}`}
                   >
-                    <span className={"input__label"}>
-                      {item.name} ({item.measurementUnit})
-                      <sub> {item.measurementType}</sub>
-                    </span>
-
-                    <TextField
-                      className={"custom_textfield"}
-                      id="number"
-                      variant="outlined"
-                      value={inputDatas[i].value}
-                      onChange={(e) => {
-                        const re = /^[0-9\b]+$/;
-                        if (e.target.value === "" || re.test(e.target.value)) {
-                          setInputValue(e.target.value, i);
-                        } else {
-                          setInputValue("", i);
-                        }
-                      }}
-                    />
+                    <span className={"input__label"}>{item.name}</span>
+                    <div className={"inputs_flex"}>
+                      <TextField
+                        className={"custom_textfield"}
+                        id="number"
+                        variant="outlined"
+                        value={inputDatas[i].value}
+                        onChange={(e) => {
+                          const re = /^[0-9\b]+$/;
+                          if (
+                            e.target.value === "" ||
+                            re.test(e.target.value)
+                          ) {
+                            setInputValue(e.target.value, i);
+                          } else {
+                            setInputValue("", i);
+                          }
+                        }}
+                      />
+                      <span className={"input__labelEnd"}>
+                        {item.measurementUnit}
+                        <sub> {item.measurementType}</sub>
+                      </span>
+                    </div>
                   </div>
                 );
               })}
@@ -233,25 +267,58 @@ const FinalEffluent = () => {
           )}
         </div>
 
-        {calculatedData.length > 0 && (
-          <div className={"outPutTable"}>
-            <label>CALCULATED DATA</label>
-            {data &&
-              data?.units[0]?.measurements[0]?.calculatedData?.map(
-                (item, i) => {
-                  return (
-                    <div className={"form_input"} key={`${i}-outp`}>
-                      <span className={"input__label"}>
-                        {item.name} <sub> {item.measurementType}</sub> (
-                        {item.measurementUnit}) :
-                      </span>
-                      <span>{item.value}</span>
-                    </div>
-                  );
-                }
-              )}
+        {calculatedData[0]?.length > 0 && (
+          <div className={"outPutTable__button"}>
+            <Button variant="contained" onClick={handleOpenCalculated}>
+              Show Calculated Values
+            </Button>
           </div>
         )}
+
+        {removeCalculatedModal && removeCalculatedModal.show ? (
+          <Dialog open={removeCalculatedModal.show}>
+            <div className={"outPutTable__popup"}>
+              <div className={"outPutTable__title "}>
+                <div
+                  className={"outPutTable__close"}
+                  onClick={() => {
+                    setRemoveCalculatedModal({
+                      show: false,
+                    });
+                  }}
+                >
+                  <CloseIcon />
+                </div>
+              </div>
+
+              <DialogContent>
+                <div className={"outPutTable__content"}>
+                  {calculatedData.length > 0 && (
+                    <div className={"outPutTable"}>
+                      <label>Calculated Values</label>
+                      {data &&
+                        data?.units[0]?.measurements[0]?.calculatedData?.map(
+                          (item, i) => {
+                            return (
+                              <div className={"form_input"} key={`${i}-outp`}>
+                                <span className={"input__label"}>
+                                  {item.name} <sub> {item.measurementType}</sub>
+                                </span>
+                                <span>{item.value}</span>
+                                <span className={"calculated_type"}>
+                                  {item.measurementUnit}
+                                </span>
+                              </div>
+                            );
+                          }
+                        )}
+                    </div>
+                  )}
+                </div>
+              </DialogContent>
+            </div>
+          </Dialog>
+        ) : null}
       </div>
 
       <div className={"formButton"}>

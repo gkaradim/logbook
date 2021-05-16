@@ -11,6 +11,7 @@
 }
 
 .innerForm {
+  position: relative;
   display: flex;
   align-items: flex-start;
   margin-top: 15px;
@@ -28,16 +29,11 @@
   &__icon {
     cursor: pointer;
   }
-
-  &__dateRight {
-    margin: auto;
-    font-weight: bold;
-  }
 }
 
 .form {
   .leftColumn {
-    width: 60%;
+    width: 100%;
     display: block;
 
     h4 {
@@ -67,8 +63,18 @@
   }
 
   .formTextarea {
-    margin: 40px 0;
+    margin: 40px 0 !important;
     width: 80%;
     height: auto !important;
+    display: flex !important;
+  }
+}
+
+@media screen and (max-width: 1360px) {
+  .form {
+    .leftColumn {
+      width: 75%;
+      display: block;
+    }
   }
 }

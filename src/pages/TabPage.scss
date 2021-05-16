@@ -5,6 +5,7 @@
 .flowRate {
   width: 100%;
   padding: 60px 20px;
+  padding-left: 260px;
 
   h2 {
     margin-bottom: 0 !important;
@@ -58,4 +59,12 @@
 
 .chartjs-render-monitor {
   margin: 120px 0;
+}
+
+@media screen and (max-width: 1360px) {
+  .flowRate {
+    width: 100%;
+    padding: 60px 20px;
+    padding-left: 205px;
+  }
 }

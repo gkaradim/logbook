@@ -50,7 +50,7 @@ function TabPage() {
   };
 
   return (
-    <div className="flowRate" style={{ paddingLeft: 260 }}>
+    <div className="flowRate">
       <div className={"flowRate__inner"}>
         <h2>Greek Log Book</h2>
       </div>

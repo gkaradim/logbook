@@ -137,7 +137,7 @@ const ReportPerL = () => {
             startDate={startDate}
             endDate={endDate}
             selectsRange
-            openToDate={new Date()}
+            maxDate={new Date()}
             value={!endDate ? new Date() : inputValue}
           />
         </div>

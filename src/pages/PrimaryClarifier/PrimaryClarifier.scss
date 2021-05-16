@@ -11,7 +11,7 @@
 }
 
 .innerForm {
-  // display: block;
+  position: relative;
 }
 
 .form_title {
@@ -25,11 +25,6 @@
   }
   &__icon {
     cursor: pointer;
-  }
-
-  &__dateRight {
-    margin: auto;
-    font-weight: bold;
   }
 }
 
@@ -64,8 +59,9 @@
   }
 
   .formTextarea {
-    margin: 40px 0;
+    margin: 40px 0 !important;
     width: 80%;
     height: auto !important;
+    display: flex !important;
   }
 }

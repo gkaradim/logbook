@@ -50,7 +50,7 @@ function Charts() {
   };
 
   return (
-    <div className=" flowRate" style={{ paddingLeft: 260 }}>
+    <div className=" flowRate">
       <div className={"flowRate__inner"}>
         <h2>Log Book Charts</h2>
       </div>
