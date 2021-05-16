@@ -182,10 +182,10 @@ const RawInfluent = () => {
     return item;
   });
 
-  console.log("calculatedData", calculatedData);
-  const maxDate = true;
+  // console.log("calculatedData", calculatedData);
+  // const maxDate = true;
 
-  console.log("calculated Length", calculatedData.length);
+  // console.log("calculated Length", calculatedData.length);
 
   return (
     <div className={"form"}>
@@ -202,16 +202,20 @@ const RawInfluent = () => {
             maxDate={new Date()}
             dateFormat="cccc, d MMMM" // 'cccc' is not correct, it uses the old formatting from date-fns and should be replaced with 'dddd' once it is fixed in react-datepicker
           />
-          {!maxDate && (
+          <span className={"form_title__icon"} onClick={() => nextDate()}>
+            Next Day
+            <NavigateNextIcon />
+          </span>
+          {/* {!maxDate && (
             <span className={"form_title__icon"} onClick={() => nextDate()}>
               Next Day
               <NavigateNextIcon />
             </span>
-          )}
+          )} */}
 
           <span
             className={"form_title__icon--today"}
-            style={maxDate ? { margin: "0px" } : { margin: "-45px" }}
+            // style={maxDate ? { margin: "0px" } : { margin: "-45px" }}
             onClick={() => todaysDate()}
           >
             Today
@@ -255,7 +259,13 @@ const RawInfluent = () => {
                         }}
                       />
                       <span className={"input__labelEnd"}>
-                        {item.measurementUnit}
+                        {item.measurementUnit === "m3/day" ? (
+                          <span>
+                            m<sup>3</sup>/day
+                          </span>
+                        ) : (
+                          item.measurementUnit
+                        )}
                         <sub> {item.measurementType}</sub>
                       </span>
                     </div>

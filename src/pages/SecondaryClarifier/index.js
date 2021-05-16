@@ -276,7 +276,13 @@ const SecondaryClarifier = () => {
                           }}
                         />
                         <span className={"input__labelEnd"}>
-                          {item.measurementUnit}
+                          {item.measurementUnit === "m3/day" ? (
+                            <span>
+                              m<sup>3</sup>/day
+                            </span>
+                          ) : (
+                            item.measurementUnit
+                          )}
                           <sub> {item.measurementType}</sub>
                         </span>
                       </div>
@@ -316,7 +322,13 @@ const SecondaryClarifier = () => {
                           }}
                         />
                         <span className={"input__labelEnd"}>
-                          {item.measurementUnit}
+                          {item.measurementUnit === "m3/day" ? (
+                            <span>
+                              m<sup>3</sup>/day
+                            </span>
+                          ) : (
+                            item.measurementUnit
+                          )}
                           <sub> {item.measurementType}</sub>
                         </span>
                       </div>

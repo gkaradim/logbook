@@ -167,6 +167,7 @@
   .column_outter {
     width: 90%;
   }
+
   .Sidebar {
     width: 190px;
   }
@@ -175,6 +176,14 @@
     display: flex;
     align-items: center;
     margin-right: 25px;
+  }
+
+  .form_title__icon {
+    margin: 0 25px;
+  }
+
+  .form_title__icon--today {
+    margin: -5px;
   }
 
   .form .form_input .input__label {
