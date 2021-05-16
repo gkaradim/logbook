@@ -254,7 +254,9 @@ const Rbc = () => {
                       key={`${i}-raw`}
                       id={`form_input-${i}`}
                     >
-                      <span className={"input__label"}>{item.name}</span>
+                      <span className={"input__label"}>
+                        {item.name} <sub> {item.measurementType}</sub>
+                      </span>
                       <div className={"inputs_flex"}>
                         <TextField
                           className={"custom_textfield"}
@@ -283,7 +285,6 @@ const Rbc = () => {
                           ) : (
                             item.measurementUnit
                           )}
-                          <sub> {item.measurementType}</sub>
                         </span>
                       </div>
                     </div>
@@ -302,7 +303,10 @@ const Rbc = () => {
                       key={`${i}-raw`}
                       id={`form_input-${i}`}
                     >
-                      <span className={"input__label"}>{item.name}</span>
+                      <span className={"input__label"}>
+                        {item.name}
+                        <sub> {item.measurementType}</sub>
+                      </span>
                       <div className={"inputs_flex"}>
                         <TextField
                           className={"custom_textfield"}
@@ -329,7 +333,6 @@ const Rbc = () => {
                           ) : (
                             item.measurementUnit
                           )}
-                          <sub> {item.measurementType}</sub>
                         </span>
                       </div>
                     </div>
