@@ -1,0 +1,53 @@
+.btn {
+  &--hidden {
+    visibility: hidden;
+  }
+
+  .MuiButton-label {
+    text-align: center;
+  }
+
+  .MuiCircularProgress-root {
+    color: #2f4050;
+  }
+
+  &--text {
+    .MuiButton-label {
+      span {
+        border-bottom: 1px dotted #a4a8aa;
+      }
+    }
+
+    &:hover {
+      .MuiButton-label {
+        span {
+          border-bottom: 1px dotted #a4a8aa;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 960px) {
+  .btn {
+    &--text {
+      .MuiButton-label {
+        border-bottom: 1px dotted #a4a8aa;
+
+        span {
+          border: none;
+        }
+      }
+
+      &:hover {
+        .MuiButton-label {
+          border-bottom: 1px dotted #262f35;
+
+          span {
+            border: none;
+          }
+        }
+      }
+    }
+  }
+}

@@ -8,7 +8,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 import CloseIcon from "@material-ui/icons/Close";
 
-import Button from "@material-ui/core/Button";
+import Button from "components/Button";
 
 import OutPutTableData from "../../components/OutPutTableData";
 
@@ -20,6 +20,8 @@ import "./FinalEffluent.scss";
 import "../style.scss";
 
 const FinalEffluent = () => {
+  const [loading, setLoading] = React.useState(false);
+
   const [date, setDate] = useState(new Date());
   const [data, setData] = useState(null);
   const [calculatedData, setCalculatedData] = useState([]);
@@ -42,6 +44,7 @@ const FinalEffluent = () => {
   }, []);
 
   const getTodayValues = async () => {
+    setLoading(true);
     try {
       const dateNew = moment(new Date()).format("YYYY-MM-DD");
 
@@ -67,14 +70,19 @@ const FinalEffluent = () => {
       if (response.status === 200) {
         setInputDatas(dataInputs);
         setData(data);
+        setComment(data.comments);
         setCalculatedData(calculatedData);
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const changeDate = async (date) => {
+    setLoading(true);
+
     try {
       setDate(date);
       setData(null);
@@ -101,6 +109,7 @@ const FinalEffluent = () => {
 
       setInputDatas(dataInputs);
       setData(data);
+      setComment(data.comments);
       setCalculatedData(calculatedData);
     } catch (error) {
       if (error.response) {
@@ -109,10 +118,14 @@ const FinalEffluent = () => {
         }
       }
       console.log(error.response ? error.response : error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const submitForm = async () => {
+    setLoading(true);
+
     try {
       const dateNew = moment(date).toISOString();
 
@@ -144,6 +157,8 @@ const FinalEffluent = () => {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -181,6 +196,8 @@ const FinalEffluent = () => {
     return item;
   });
 
+  const shouldDisplayNextDay = moment(date).endOf("day").isBefore(new Date()); // true
+
   return (
     <div className={"form"}>
       <div className={"form_title"}>
@@ -196,12 +213,17 @@ const FinalEffluent = () => {
             maxDate={new Date()}
             dateFormat="cccc, d MMMM" // 'cccc' is not correct, it uses the old formatting from date-fns and should be replaced with 'dddd' once it is fixed in react-datepicker
           />
-          <span className={"form_title__icon"} onClick={() => nextDate()}>
-            Next Day
-            <NavigateNextIcon />
-          </span>
+          {shouldDisplayNextDay && (
+            <span className={"form_title__icon"} onClick={() => nextDate()}>
+              Next Day
+              <NavigateNextIcon />
+            </span>
+          )}
           <span
             className={"form_title__icon--today"}
+            style={
+              shouldDisplayNextDay ? { margin: "-45px" } : { margin: "0 45px" }
+            }
             onClick={() => todaysDate()}
           >
             Today
@@ -268,7 +290,7 @@ const FinalEffluent = () => {
               id="number"
               label="Observations"
               variant="outlined"
-              value={data.comments}
+              value={comment}
               onChange={(e) => setComment(e.target.value)}
             />
           )}
@@ -330,13 +352,11 @@ const FinalEffluent = () => {
 
       <div className={"formButton"}>
         <Button
-          variant="outlined"
-          size="medium"
-          color="primary"
+          variant={"contained"}
+          loading={loading}
+          label={"Submit"}
           onClick={submitForm}
-        >
-          Submit
-        </Button>
+        />
       </div>
     </div>
   );

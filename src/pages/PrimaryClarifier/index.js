@@ -6,7 +6,7 @@ import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import { API_URL } from "utils/config";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
-import Button from "@material-ui/core/Button";
+import Button from "components/Button";
 import CloseIcon from "@material-ui/icons/Close";
 
 import OutPutTableData from "../../components/OutPutTableData";
@@ -19,6 +19,8 @@ import "./PrimaryClarifier.scss";
 import "../style.scss";
 
 const PrimaryClarifier = () => {
+  const [loading, setLoading] = React.useState(false);
+
   const [date, setDate] = useState(new Date());
   const [data, setData] = useState(null);
   // const [data2, setData2] = useState(null);
@@ -43,6 +45,8 @@ const PrimaryClarifier = () => {
   }, []);
 
   const getTodayValues = async () => {
+    setLoading(true);
+
     try {
       const dateNew = moment(new Date()).format("YYYY-MM-DD");
 
@@ -74,16 +78,19 @@ const PrimaryClarifier = () => {
       if (response.status === 200) {
         setInputDatas([[...dataInputs], [...dataInputs2]]);
         setData({ ...data });
+        setComment(data.comments);
         setCalculatedData(calculatedData);
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  console.log("data", data);
-
   const changeDate = async (date) => {
+    setLoading(true);
+
     try {
       setDate(date);
       setData(null);
@@ -115,6 +122,7 @@ const PrimaryClarifier = () => {
 
       setInputDatas([[...dataInputs], [...dataInputs2]]);
       setData({ ...data });
+      setComment(data.comments);
       setCalculatedData(calculatedData);
     } catch (error) {
       if (error.response) {
@@ -123,10 +131,14 @@ const PrimaryClarifier = () => {
         }
       }
       console.log(error.response ? error.response : error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const submitForm = async () => {
+    setLoading(true);
+
     try {
       const dateNew = moment(date).toISOString();
 
@@ -172,6 +184,8 @@ const PrimaryClarifier = () => {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -213,6 +227,8 @@ const PrimaryClarifier = () => {
     return item;
   });
 
+  const shouldDisplayNextDay = moment(date).endOf("day").isBefore(new Date()); // true
+
   return (
     <div className={"form"}>
       <div className={"form_title"}>
@@ -228,12 +244,17 @@ const PrimaryClarifier = () => {
             maxDate={new Date()}
             dateFormat="cccc, d MMMM" // 'cccc' is not correct, it uses the old formatting from date-fns and should be replaced with 'dddd' once it is fixed in react-datepicker
           />
-          <span className={"form_title__icon"} onClick={() => nextDate()}>
-            Next Day
-            <NavigateNextIcon />
-          </span>
+          {shouldDisplayNextDay && (
+            <span className={"form_title__icon"} onClick={() => nextDate()}>
+              Next Day
+              <NavigateNextIcon />
+            </span>
+          )}
           <span
             className={"form_title__icon--today"}
+            style={
+              shouldDisplayNextDay ? { margin: "-45px" } : { margin: "0 45px" }
+            }
             onClick={() => todaysDate()}
           >
             Today
@@ -352,7 +373,7 @@ const PrimaryClarifier = () => {
               id="number"
               label="Observations"
               variant="outlined"
-              value={data.comments}
+              value={comment}
               onChange={(e) => setComment(e.target.value)}
             />
           )}
@@ -433,13 +454,11 @@ const PrimaryClarifier = () => {
       </div>
       <div className={"formButton"}>
         <Button
-          variant="outlined"
-          size="medium"
-          color="primary"
+          variant={"contained"}
+          loading={loading}
+          label={"Submit"}
           onClick={submitForm}
-        >
-          Submit
-        </Button>
+        />
       </div>
     </div>
   );

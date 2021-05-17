@@ -6,6 +6,17 @@
   width: 100%;
 }
 
+.form.opacity {
+  opacity: 0.7;
+}
+
+.formButton button {
+  border: 1px solid #2f4050;
+  background: transparent;
+  color: #2f4050;
+  width: 90px;
+  padding: 7px 16px;
+}
 .MuiFormControl-root {
   display: block !important;
   margin: 1px !important;

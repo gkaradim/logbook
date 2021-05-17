@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from "react";
-
 import TextField from "@material-ui/core/TextField";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
-import { CircularProgress } from "@material-ui/core";
-import InputAdornment from "@material-ui/core/InputAdornment";
 import { API_URL } from "utils/config";
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
 import CloseIcon from "@material-ui/icons/Close";
-import Button from "@material-ui/core/Button";
+import Button from "components/Button";
 
 import DatePicker from "react-datepicker";
 import moment from "moment";
@@ -41,6 +38,7 @@ const RawInfluent = () => {
   }, []);
 
   const getTodayValues = async () => {
+    setLoading(true);
     try {
       const dateNew = moment(new Date()).format("YYYY-MM-DD");
 
@@ -66,14 +64,18 @@ const RawInfluent = () => {
       if (response.status === 200) {
         setInputDatas(dataInputs);
         setData(data);
+        setComment(data.comments);
         setCalculatedData(calculatedData);
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const changeDate = async (date) => {
+    setLoading(true);
     try {
       setDate(date);
       setData(null);
@@ -100,6 +102,7 @@ const RawInfluent = () => {
 
       setInputDatas(dataInputs);
       setData(data);
+      setComment(data.comments);
       setCalculatedData(calculatedData);
     } catch (error) {
       if (error.response) {
@@ -108,6 +111,8 @@ const RawInfluent = () => {
         }
       }
       console.log(error.response ? error.response : error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -141,10 +146,11 @@ const RawInfluent = () => {
       if (response.status === 201) {
         setInputDatas(dataInputs);
         setCalculatedData(calculatedData);
-        setLoading(false);
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -182,13 +188,10 @@ const RawInfluent = () => {
     return item;
   });
 
-  // console.log("calculatedData", calculatedData);
-  // const maxDate = true;
-
-  // console.log("calculated Length", calculatedData.length);
+  const shouldDisplayNextDay = moment(date).endOf("day").isBefore(new Date()); // true
 
   return (
-    <div className={"form"}>
+    <div className={loading ? "form opacity" : "form"}>
       <div className={"form_title"}>
         <div className={"form_title__calendar"}>
           <span className={"form_title__icon"} onClick={() => prevDate()}>
@@ -202,20 +205,19 @@ const RawInfluent = () => {
             maxDate={new Date()}
             dateFormat="cccc, d MMMM" // 'cccc' is not correct, it uses the old formatting from date-fns and should be replaced with 'dddd' once it is fixed in react-datepicker
           />
-          <span className={"form_title__icon"} onClick={() => nextDate()}>
-            Next Day
-            <NavigateNextIcon />
-          </span>
-          {/* {!maxDate && (
+
+          {shouldDisplayNextDay && (
             <span className={"form_title__icon"} onClick={() => nextDate()}>
               Next Day
               <NavigateNextIcon />
             </span>
-          )} */}
+          )}
 
           <span
             className={"form_title__icon--today"}
-            // style={maxDate ? { margin: "0px" } : { margin: "-45px" }}
+            style={
+              shouldDisplayNextDay ? { margin: "-45px" } : { margin: "0 45px" }
+            }
             onClick={() => todaysDate()}
           >
             Today
@@ -283,16 +285,18 @@ const RawInfluent = () => {
               id="number"
               label="Observations"
               variant="outlined"
-              value={data.comments}
+              value={comment}
               onChange={(e) => setComment(e.target.value)}
             />
           )}
         </div>
         {calculatedData[0]?.length > 0 && (
           <div className={"outPutTable__button"}>
-            <Button variant="contained" onClick={handleOpenCalculated}>
-              Show Calculated Values
-            </Button>
+            <Button
+              variant={"contained"}
+              label={"Show Calculated Values"}
+              onClick={handleOpenCalculated}
+            />
           </div>
         )}
 
@@ -344,20 +348,11 @@ const RawInfluent = () => {
 
       <div className={"formButton"}>
         <Button
-          variant="outlined"
-          size="medium"
-          color="primary"
+          variant={"contained"}
+          loading={loading}
+          label={"Submit"}
           onClick={submitForm}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                {loading && <CircularProgress color="primary" size={20} />}
-              </InputAdornment>
-            ),
-          }}
-        >
-          Submit
-        </Button>
+        />
       </div>
     </div>
   );
