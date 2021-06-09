@@ -307,6 +307,15 @@ const AnaerobicDigestion = () => {
                     >
                       <span className={"input__label"}>
                         {item.name} <sub> {item.measurementType}</sub>
+                        <span className={"input__labelEnd"}>
+                          {item.measurementUnit === "m3/day" ? (
+                            <span>
+                              (m<sup>3</sup>/day)
+                            </span>
+                          ) : (
+                            `(${item.measurementUnit})`
+                          )}
+                        </span>
                       </span>
                       <div className={"inputs_flex"}>
                         <TextField
@@ -328,16 +337,6 @@ const AnaerobicDigestion = () => {
                             }
                           }}
                         />
-
-                        <span className={"input__labelEnd"}>
-                          {item.measurementUnit == "m3/day" ? (
-                            <span>
-                              m<sup>3</sup>/day
-                            </span>
-                          ) : (
-                            item.measurementUnit
-                          )}
-                        </span>
                       </div>
                     </div>
                   );
@@ -357,6 +356,15 @@ const AnaerobicDigestion = () => {
                     >
                       <span className={"input__label"}>
                         {item.name} <sub> {item.measurementType}</sub>
+                        <span className={"input__labelEnd"}>
+                          {item.measurementUnit === "m3/day" ? (
+                            <span>
+                              (m<sup>3</sup>/day)
+                            </span>
+                          ) : (
+                            `(${item.measurementUnit})`
+                          )}
+                        </span>
                       </span>
                       <div className={"inputs_flex"}>
                         <TextField
@@ -376,15 +384,6 @@ const AnaerobicDigestion = () => {
                             }
                           }}
                         />
-                        <span className={"input__labelEnd"}>
-                          {item.measurementUnit === "m3/day" ? (
-                            <span>
-                              m<sup>3</sup>/day
-                            </span>
-                          ) : (
-                            item.measurementUnit
-                          )}
-                        </span>
                       </div>
                     </div>
                   );
@@ -403,8 +402,16 @@ const AnaerobicDigestion = () => {
                       id={`form_input-${i}`}
                     >
                       <span className={"input__label"}>
-                        {item.name}
-                        <sub> {item.measurementType}</sub>
+                        {item.name} <sub> {item.measurementType}</sub>
+                        <span className={"input__labelEnd"}>
+                          {item.measurementUnit === "m3/day" ? (
+                            <span>
+                              (m<sup>3</sup>/day)
+                            </span>
+                          ) : (
+                            `(${item.measurementUnit})`
+                          )}
+                        </span>
                       </span>
                       <div className={"inputs_flex"}>
                         <TextField
@@ -424,15 +431,6 @@ const AnaerobicDigestion = () => {
                             }
                           }}
                         />
-                        <span className={"input__labelEnd"}>
-                          {item.measurementUnit === "ft3/day" ? (
-                            <span>
-                              ft<sup>3</sup>/day
-                            </span>
-                          ) : (
-                            item.measurementUnit
-                          )}
-                        </span>
                       </div>
                     </div>
                   );
@@ -456,14 +454,62 @@ const AnaerobicDigestion = () => {
         </div>
 
         {calculatedData[0]?.length > 0 && (
+          <div className={"outPutTable__content"}>
+            <div className={"outPutTable"}>
+              <label>Calculated Values - {unitLeftName}</label>
+              {data &&
+                data?.units[0]?.measurements[0]?.calculatedData?.map(
+                  (item, i) => {
+                    return (
+                      <div className={"form_input"} key={`${i}-outp`}>
+                        <span className={"input__label"}>
+                          {item.name} <sub> {item.measurementType}</sub>
+                        </span>
+                        <span>{item.value}</span>
+                        <span className={"calculated_type"}>
+                          {item.measurementUnit}
+                        </span>
+                      </div>
+                    );
+                  }
+                )}
+            </div>
+          </div>
+        )}
+
+        {calculatedData[0]?.length > 0 && (
+          <div className={"outPutTable__content"}>
+            <div className={"outPutTable"}>
+              <label>Calculated Values - {unitMiddleName}</label>
+              {data &&
+                data?.units[1]?.measurements[0]?.calculatedData?.map(
+                  (item, i) => {
+                    return (
+                      <div className={"form_input"} key={`${i}-outp`}>
+                        <span className={"input__label"}>
+                          {item.name} <sub> {item.measurementType}</sub>
+                        </span>
+                        <span>{item.value}</span>
+                        <span className={"calculated_type"}>
+                          {item.measurementUnit}
+                        </span>
+                      </div>
+                    );
+                  }
+                )}
+            </div>
+          </div>
+        )}
+
+        {/* {calculatedData[0]?.length > 0 && (
           <div className={"outPutTable__button"}>
             <Button variant="contained" onClick={handleOpenCalculated}>
               Show Calculated Values
             </Button>
           </div>
-        )}
+        )} */}
 
-        {removeCalculatedModal && removeCalculatedModal.show ? (
+        {/* {removeCalculatedModal && removeCalculatedModal.show ? (
           <Dialog open={removeCalculatedModal.show}>
             <div className={"outPutTable__popup"}>
               <div className={"outPutTable__title "}>
@@ -480,55 +526,11 @@ const AnaerobicDigestion = () => {
               </div>
 
               <DialogContent>
-                <div className={"outPutTable__content"}>
-                  {calculatedData.length > 0 && (
-                    <div className={"outPutTable"}>
-                      <label>Calculated Values - {unitLeftName}</label>
-                      {data &&
-                        data?.units[0]?.measurements[0]?.calculatedData?.map(
-                          (item, i) => {
-                            return (
-                              <div className={"form_input"} key={`${i}-outp`}>
-                                <span className={"input__label"}>
-                                  {item.name} <sub> {item.measurementType}</sub>
-                                </span>
-                                <span>{item.value}</span>
-                                <span className={"calculated_type"}>
-                                  {item.measurementUnit}
-                                </span>
-                              </div>
-                            );
-                          }
-                        )}
-                    </div>
-                  )}
-
-                  {calculatedData.length > 0 && (
-                    <div className={"outPutTable"}>
-                      <label>Calculated Values - {unitMiddleName}</label>
-                      {data &&
-                        data?.units[1]?.measurements[0]?.calculatedData?.map(
-                          (item, i) => {
-                            return (
-                              <div className={"form_input"} key={`${i}-outp`}>
-                                <span className={"input__label"}>
-                                  {item.name} <sub> {item.measurementType}</sub>
-                                </span>
-                                <span>{item.value}</span>
-                                <span className={"calculated_type"}>
-                                  {item.measurementUnit}
-                                </span>
-                              </div>
-                            );
-                          }
-                        )}
-                    </div>
-                  )}
-                </div>
+           
               </DialogContent>
             </div>
           </Dialog>
-        ) : null}
+        ) : null} */}
       </div>
 
       <div className={"formButton"}>

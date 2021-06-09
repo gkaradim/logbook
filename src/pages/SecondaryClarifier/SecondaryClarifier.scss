@@ -2,14 +2,6 @@
   color: #2f4051 !important;
   border: 1px solid #2f4051 !important;
 }
-.leftColumn {
-  width: 35%;
-}
-
-.rightColumn {
-  width: 35%;
-}
-
 .innerForm {
   position: relative;
 }
@@ -29,8 +21,6 @@
 
 .form {
   .column {
-    width: 40%;
-
     h4 {
       margin: 60px 0 35px;
     }

@@ -3,7 +3,7 @@
 }
 
 .column_outter {
-  width: 100%;
+  width: auto;
 }
 
 .form.opacity {
@@ -52,6 +52,12 @@
 .MuiDialogContent-root {
   padding: 0px !important;
 }
+
+.form .leftColumn {
+  width: 45%;
+  display: block;
+}
+
 .outPutTable {
   border: 1px solid #d9d8d9;
   padding: 10px 7px;
@@ -59,6 +65,11 @@
   height: auto;
   width: auto;
   background: #f5f5db;
+
+  &__content {
+    margin-left: 50px;
+    margin-top: 70px;
+  }
 
   label {
     color: #97b479;
@@ -134,7 +145,8 @@
   padding: 25px;
   .column {
     float: left;
-    /* padding: 10px; */
+    width: 45%;
+    margin-right: 15px;
   }
 
   .form_input {
@@ -144,8 +156,8 @@
 
     .input__label {
       font-size: 13px;
-      min-width: 152px;
-      max-width: 152px;
+      min-width: 145px;
+      max-width: 145px;
       // word-break: break-all;
       margin-right: 20px;
     }
@@ -157,8 +169,6 @@
   }
   .input__labelEnd {
     margin-left: 8px;
-    display: flex;
-    align-items: baseline;
   }
 
   .custom_textfield .MuiOutlinedInput-root {
@@ -180,7 +190,7 @@
 
 @media screen and (max-width: 1360px) {
   .column_outter {
-    width: 90%;
+    width: auto;
   }
 
   .Sidebar {
