@@ -186,6 +186,7 @@ const PrimaryClarifier = () => {
       console.log(error);
     } finally {
       setLoading(false);
+      window.location.reload(false);
     }
   };
 
